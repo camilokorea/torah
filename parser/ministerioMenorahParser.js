@@ -38,44 +38,59 @@ dictionary.forEach(dict => {
                 caps: []
             });
 
-        let separator = '';
-
-        separator = item.abrev + ' ';
-
-        let caps = `${bookContent}`.split(separator).map(item => {
-            return item.trim()
-        }).filter(item => {
-            return item.length > 10;
-        }).map(item => {
-            return item.substring(item.indexOf(':') + 1, item.length);
-        });
+        let caps = `${bookContent}`
+            .split(item.abrev + ' ')
+            .map(item => {
+                return item.trim()
+            }).filter(item => {
+                return item.length > 10;
+            }).map(item => {
+                return item.substring(item.indexOf(':') + 1, item.length);
+            });
 
         let capsCounter = 1;
 
         caps.forEach(cap => {
-
             text += 'Capitulo ' + String(capsCounter) + '\n';
 
-            text += formatBibleText(cap).split('\n').map(item => {
-                return item.trim().replace(/\t/g, '').replace(/(.)\1{2}/g, '').replace(/--./g, '').replace(/.--/g, '.').replace(/YaHWéH-?/g, 'YaHWéH (יהוה)').replace(/.-  -/g, '.');
-            }).filter(item => {
-                return item.length > 0;
-            }).join('\n') + '\n\n';
-
-            dataBase[dataBase.length - 1].caps.push(
-                {
-                    capitulo: capsCounter,
-                    versiculos: formatBibleText(cap).split('\n').map(item => {
-                        return item.trim().replace(/\t/g, '').replace(/(.)\1{2}/g, '').replace(/--./g, '').replace(/.--/g, '.').replace(/YaHWéH-?/g, 'YaHWéH (יהוה)').replace(/.-  -/g, '.');
-                    }).filter(item => {
-                        return item.length > 0;
-                    })
+            if (item['prefijo']) {
+                const vers = cap.split(item['prefijo'] + ' ').map(item => {
+                    if (item.indexOf(':') > 5) {
+                        return item.trim().replace(/\?\?\?\?/g, 'יהוה');
+                    } else {
+                        return item.trim().substring(item.indexOf(':') + 1, item.length).replace(/\?\?\?\?/g, 'יהוה');
+                    }
                 });
+
+                text += vers.join('\n') + '\n\n';
+
+                dataBase[dataBase.length - 1].caps.push(
+                    {
+                        capitulo: capsCounter,
+                        versiculos: vers
+                    });
+            } else {
+                text += formatBibleText(cap).split('\n').map(item => {
+                    return item.trim().replace(/\t/g, '').replace(/(.)\1{2}/g, '').replace(/--./g, '').replace(/.--/g, '.').replace(/YaHWéH-\?/g, 'YaHWéH (יהוה)').replace(/.-  -/g, '.');
+                }).filter(item => {
+                    return item.length > 0;
+                }).join('\n') + '\n\n';
+
+                dataBase[dataBase.length - 1].caps.push(
+                    {
+                        capitulo: capsCounter,
+                        versiculos: formatBibleText(cap).split('\n').map(item => {
+                            return item.trim().replace(/\t/g, '').replace(/(.)\1{2}/g, '').replace(/--./g, '').replace(/.--/g, '.').replace(/YaHWéH-\?/g, 'YaHWéH (יהוה)').replace(/.-  -/g, '.');
+                        }).filter(item => {
+                            return item.length > 0;
+                        })
+                    });
+            }
 
             capsCounter++;
         });
     }
 });
 
-fs.writeFileSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\antiguo.json', JSON.stringify(dataBase), { encoding: 'utf8' })
-fs.writeFileSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\antiguo_testamento.txt', text, { encoding: 'utf8' })
+fs.writeFileSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\torah.json', JSON.stringify(dataBase), { encoding: 'utf8' })
+fs.writeFileSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\torah.txt', text, { encoding: 'utf8' })
