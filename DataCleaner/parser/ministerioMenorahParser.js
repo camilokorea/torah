@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const dictionary = JSON.parse(fs.readFileSync("C:\\CODE\\TANAKH\\data\\ministerioMenorahDictionary.json", 'utf8'));
+const dictionary = JSON.parse(fs.readFileSync("C:\\CODE\\TANAKH\\DataCleaner\\data\\ministerioMenorahDictionary.json", 'utf8'));
 
-const files = fs.readdirSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\books\\');
+const files = fs.readdirSync('C:\\CODE\\TANAKH\\DataCleaner\\material\\ministeriomenorah\\books\\');
 
 let dataBase = [];
 
@@ -21,7 +21,7 @@ function formatBibleText(text) {
 }
 
 dictionary.forEach(dict => {
-    const filePath = 'C:\\CODE\\TANAKH\\material\\ministeriomenorah\\books\\' + files.filter(item => {
+    const filePath = 'C:\\CODE\\TANAKH\\DataCleaner\\material\\ministeriomenorah\\books\\' + files.filter(item => {
         return item === dict.fileName;
     })[0];
 
@@ -34,12 +34,13 @@ dictionary.forEach(dict => {
 
         dataBase.push(
             {
-                libro: item,
-                caps: []
+                nombre: item.nombre,
+                abreviacion: item.abreviacion,
+                capitulos: []
             });
 
-        let caps = `${bookContent}`
-            .split(item.abrev + ' ')
+        let capitulos = `${bookContent}`
+            .split(item.abreviacion + ' ')
             .map(item => {
                 return item.trim()
             }).filter(item => {
@@ -50,7 +51,7 @@ dictionary.forEach(dict => {
 
         let capsCounter = 1;
 
-        caps.forEach(cap => {
+        capitulos.forEach(cap => {
             text += 'Capitulo ' + String(capsCounter) + '\n';
 
             if (item['prefijo']) {
@@ -64,9 +65,9 @@ dictionary.forEach(dict => {
 
                 text += vers.join('\n') + '\n\n';
 
-                dataBase[dataBase.length - 1].caps.push(
+                dataBase[dataBase.length - 1].capitulos.push(
                     {
-                        capitulo: capsCounter,
+                        capituloNumero: capsCounter,
                         versiculos: vers
                     });
             } else {
@@ -76,9 +77,9 @@ dictionary.forEach(dict => {
                     return item.length > 0;
                 }).join('\n') + '\n\n';
 
-                dataBase[dataBase.length - 1].caps.push(
+                dataBase[dataBase.length - 1].capitulos.push(
                     {
-                        capitulo: capsCounter,
+                        capituloNumero: capsCounter,
                         versiculos: formatBibleText(cap).split('\n').map(item => {
                             return item.trim().replace(/\t/g, '').replace(/(.)\1{2}/g, '').replace(/--./g, '').replace(/.--/g, '.').replace(/YaHWéH-\?/g, 'YaHWéH (יהוה)').replace(/.-  -/g, '.');
                         }).filter(item => {
@@ -92,5 +93,5 @@ dictionary.forEach(dict => {
     }
 });
 
-fs.writeFileSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\torah.json', JSON.stringify(dataBase), { encoding: 'utf8' })
-fs.writeFileSync('C:\\CODE\\TANAKH\\material\\ministeriomenorah\\torah.txt', text, { encoding: 'utf8' })
+fs.writeFileSync('C:\\CODE\\TANAKH\\DataCleaner\\material\\ministeriomenorah\\torah.json', JSON.stringify(dataBase), { encoding: 'utf8' })
+fs.writeFileSync('C:\\CODE\\TANAKH\\DataCleaner\\material\\ministeriomenorah\\torah.txt', text, { encoding: 'utf8' })

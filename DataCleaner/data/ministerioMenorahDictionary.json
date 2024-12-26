@@ -2,358 +2,358 @@
     {
         "nombre": "GÉNESIS",
         "fileName": "GÉNESIS.txt",
-        "abrev": "GÉN"
+        "abreviacion": "GÉN"
     },
     {
         "nombre": "ÉXODO",
         "fileName": "ÉXODO.txt",
-        "abrev": "ÉXO"
+        "abreviacion": "ÉXO"
     },
     {
         "nombre": "LEVÍTICO",
         "fileName": "LEVÍTICO.txt",
-        "abrev": "LEVÍ"
+        "abreviacion": "LEVÍ"
     },
     {
         "nombre": "NÚMEROS",
         "fileName": "NÚMEROS.txt",
-        "abrev": "NÚM"
+        "abreviacion": "NÚM"
     },
     {
         "nombre": "DEUTERONOMIO",
         "fileName": "DEUTERONOMIO.txt",
-        "abrev": "DEUT"
+        "abreviacion": "DEUT"
     },
     {
         "nombre": "JOSUÉ - YaHoShúa",
         "fileName": "JOSUÉ.txt",
-        "abrev": "JOS"
+        "abreviacion": "JOS"
     },
     {
         "nombre": "JUECES",
         "fileName": "JUECES.txt",
-        "abrev": "JUE"
+        "abreviacion": "JUE"
     },
     {
         "nombre": "RUT",
         "fileName": "RUT.txt",
-        "abrev": "RUT"
+        "abreviacion": "RUT"
     },
     {
         "nombre": "1 SAMUEL",
         "fileName": "1 SAMUEL.txt",
-        "abrev": "1 SA"
+        "abreviacion": "1 SA"
     },
     {
         "nombre": "2 SAMUEL",
         "fileName": "2 SAMUEL.txt",
-        "abrev": "2 SA"
+        "abreviacion": "2 SA"
     },
     {
         "nombre": "1 REYES",
         "fileName": "1 REYES.txt",
-        "abrev": "1 RE"
+        "abreviacion": "1 RE"
     },
     {
         "nombre": "2 REYES",
         "fileName": "2 REYES.txt",
-        "abrev": "2 RE"
+        "abreviacion": "2 RE"
     },
     {
         "nombre": "1 CRÓNICAS",
         "fileName": "1 CRÓNICAS.txt",
-        "abrev": "1 CRÓ"
+        "abreviacion": "1 CRÓ"
     },
     {
         "nombre": "2 CRÓNICAS",
         "fileName": "2 CRÓNICAS.txt",
-        "abrev": "2 CRÓ"
+        "abreviacion": "2 CRÓ"
     },
     {
         "nombre": "ESDRAS",
         "fileName": "ESDRAS.txt",
-        "abrev": "ESD"
+        "abreviacion": "ESD"
     },
     {
         "nombre": "NEHEMÍAS",
         "fileName": "NEHEMÍAS.txt",
-        "abrev": "NEH"
+        "abreviacion": "NEH"
     },
     {
         "nombre": "ESTER",
         "fileName": "ESTER.txt",
-        "abrev": "EST"
+        "abreviacion": "EST"
     },
     {
         "nombre": "JOB",
         "fileName": "JOB.txt",
-        "abrev": "JOB"
+        "abreviacion": "JOB"
     },
     {
         "nombre": "SALMOS",
         "fileName": "SALMOS.txt",
-        "abrev": "Salm"
+        "abreviacion": "Salm"
     },
     {
         "nombre": "PROVERBIOS",
         "fileName": "PROVERBIOS.txt",
-        "abrev": "PROV"
+        "abreviacion": "PROV"
     },
     {
         "nombre": "ECLESIASTÉS",
         "fileName": "ECLESIASTÉS.txt",
-        "abrev": "ECLE"
+        "abreviacion": "ECLE"
     },
     {
         "nombre": "EL CANTAR DE LOS CANTARES",
         "fileName": "EL CANTAR DE LOS CANTARES.txt",
-        "abrev": "CANT"
+        "abreviacion": "CANT"
     },
     {
         "nombre": "ISAÍAS",
         "fileName": "ISAÍAS.txt",
-        "abrev": "ISA"
+        "abreviacion": "ISA"
     },
     {
         "nombre": "JEREMÍAS",
         "fileName": "JEREMÍAS.txt",
-        "abrev": "JER"
+        "abreviacion": "JER"
     },
     {
         "nombre": "LAMENTACIONES",
         "fileName": "LAMENTACIONES.txt",
-        "abrev": "LAM"
+        "abreviacion": "LAM"
     },
     {
         "nombre": "EZEQUIEL",
         "fileName": "EZEQUIEL.txt",
-        "abrev": "EZE"
+        "abreviacion": "EZE"
     },
     {
         "nombre": "DANIEL",
         "fileName": "DANIEL.txt",
-        "abrev": "DAN"
+        "abreviacion": "DAN"
     },
     {
         "nombre": "OSEAS",
         "fileName": "OSEAS.txt",
-        "abrev": "OSE"
+        "abreviacion": "OSE"
     },
     {
         "nombre": "JOEL",
         "fileName": "JOEL.txt",
-        "abrev": "JOE"
+        "abreviacion": "JOE"
     },
     {
         "nombre": "AMÓS",
         "fileName": "AMÓS.txt",
-        "abrev": "AMÓS"
+        "abreviacion": "AMÓS"
     },
     {
         "nombre": "ABDÍAS",
         "fileName": "ABDÍAS.txt",
-        "abrev": "Abd"
+        "abreviacion": "Abd"
     },
     {
         "nombre": "JONÁS",
         "fileName": "JONÁS.txt",
-        "abrev": "JON"
+        "abreviacion": "JON"
     },
     {
         "nombre": "MIQUEAS",
         "fileName": "MIQUEAS.txt",
-        "abrev": "MIQ"
+        "abreviacion": "MIQ"
     },
     {
         "nombre": "NAHÚM",
         "fileName": "NAHÚM.txt",
-        "abrev": "NAH"
+        "abreviacion": "NAH"
     },
     {
         "nombre": "HABACUC",
         "fileName": "HABACUC.txt",
-        "abrev": "HAB"
+        "abreviacion": "HAB"
     },
     {
         "nombre": "SOFONÍAS",
         "fileName": "SOFONÍAS.txt",
-        "abrev": "SOF"
+        "abreviacion": "SOF"
     },
     {
         "nombre": "HAGEO",
         "fileName": "HAGEO.txt",
-        "abrev": "HAG"
+        "abreviacion": "HAG"
     },
     {
         "nombre": "ZACARÍAS",
         "fileName": "ZACARÍAS.txt",
-        "abrev": "ZAC"
+        "abreviacion": "ZAC"
     },
     {
         "nombre": "MALAQUÍAS",
         "fileName": "MALAQUÍAS.txt",
-        "abrev": "MALAQ"
+        "abreviacion": "MALAQ"
     },
     {
         "nombre": "MATEO",
         "fileName": "MATEO.txt",
-        "abrev": "MATEO",
+        "abreviacion": "MATEO",
         "prefijo": "Mat"
     },
     {
         "nombre": "MARCOS",
         "fileName": "MARCOS.txt",
-        "abrev": "MARCOS",
+        "abreviacion": "MARCOS",
         "prefijo": "Mar"
     },
     {
         "nombre": "LUCAS",
         "fileName": "LUCAS.txt",
-        "abrev": "LUCAS",
+        "abreviacion": "LUCAS",
         "prefijo": "Luc"
     },
     {
         "nombre": "JUAN",
         "fileName": "JUAN.txt",
-        "abrev": "JUAN",
+        "abreviacion": "JUAN",
         "prefijo": "Jua"
     },
     {
         "nombre": "HECHOS",
         "fileName": "HECHOS.txt",
-        "abrev": "HECHOS",
+        "abreviacion": "HECHOS",
         "prefijo": "Hch"
     },
     {
         "nombre": "ROMANOS",
         "fileName": "ROMANOS.txt",
-        "abrev": "ROMANOS",
+        "abreviacion": "ROMANOS",
         "prefijo": "Rom"
     },
     {
         "nombre": "1ª. CORINTIOS",
         "fileName": "1 CORINTIOS.txt",
-        "abrev": "1 CORINTIOS",
+        "abreviacion": "1 CORINTIOS",
         "prefijo": "1Co"
     },
     {
         "nombre": "2ª. CORINTIOS",
         "fileName": "2 CORINTIOS.txt",
-        "abrev": "2 CORINTIOS",
+        "abreviacion": "2 CORINTIOS",
         "prefijo": "2Co"
     },
     {
         "nombre": "GÁLATAS",
         "fileName": "GÁLATAS.txt",
-        "abrev": "GÁLATAS",
+        "abreviacion": "GÁLATAS",
         "prefijo": "Gál"
     },
     {
         "nombre": "EFESIOS",
         "fileName": "EFESIOS.txt",
-        "abrev": "EFESIOS",
+        "abreviacion": "EFESIOS",
         "prefijo": "Efe"
     },
     {
         "nombre": "FILIPENSES",
         "fileName": "FILIPENSES.txt",
-        "abrev": "FILIPENSES",
+        "abreviacion": "FILIPENSES",
         "prefijo": "Flp"
     },
     {
         "nombre": "COLOSENSES",
         "fileName": "COLOSENSES.txt",
-        "abrev": "COLOSENSES",
+        "abreviacion": "COLOSENSES",
         "prefijo": "Col"
     },
     {
         "nombre": "1ª. TESALONISENSES",
         "fileName": "1 TESALONISENSES.txt",
-        "abrev": "1 TESALONISENSES",
+        "abreviacion": "1 TESALONISENSES",
         "prefijo": "1Ts"
     },
     {
         "nombre": "2ª. TESALONISENSES",
         "fileName": "2 TESALONISENSES.txt",
-        "abrev": "2 TESALONISENSES",
+        "abreviacion": "2 TESALONISENSES",
         "prefijo": "2Ts"
     },
     {
         "nombre": "1ª TIMOTEO",
         "fileName": "1 TIMOTEO.txt",
-        "abrev": "1 TIMOTEO",
+        "abreviacion": "1 TIMOTEO",
         "prefijo": "1Ti"
     },
     {
         "nombre": "2ª. TIMOTEO",
         "fileName": "2 TIMOTEO.txt",
-        "abrev": "2 TIMOTEO",
+        "abreviacion": "2 TIMOTEO",
         "prefijo": "2Ti"
     },
     {
         "nombre": "TITO",
         "fileName": "TITO.txt",
-        "abrev": "TITO",
+        "abreviacion": "TITO",
         "prefijo": "Tit"
     },
     {
         "nombre": "FILEMON",
         "fileName": "FILEMON.txt",
-        "abrev": "FILEMON",
+        "abreviacion": "FILEMON",
         "prefijo": "Flm"
     },
     {
         "nombre": "HEBREOS",
         "fileName": "HEBREOS.txt",
-        "abrev": "HEBREOS",
+        "abreviacion": "HEBREOS",
         "prefijo": "Heb"
     },
     {
         "nombre": "SANTIAGO (JACOBO)",
         "fileName": "SANTIAGO (JACOBO).txt",
-        "abrev": "SANTIAGO",
+        "abreviacion": "SANTIAGO",
         "prefijo": "Stg"
     },
     {
         "nombre": "1ª. PEDRO",
         "fileName": "1 PEDRO.txt",
-        "abrev": "1 PEDRO",
+        "abreviacion": "1 PEDRO",
         "prefijo": "1Pe"
     },
     {
         "nombre": "2ª. PEDRO",
         "fileName": "2 PEDRO.txt",
-        "abrev": "2 PEDRO",
+        "abreviacion": "2 PEDRO",
         "prefijo": "2Pe"
     },
     {
         "nombre": "1ª. JUAN",
         "fileName": "1 JUAN.txt",
-        "abrev": "1 JUAN",
+        "abreviacion": "1 JUAN",
         "prefijo": "1Jn"
     },
     {
         "nombre": "2ª. JUAN",
         "fileName": "2 JUAN.txt",
-        "abrev": "2 JUAN",
+        "abreviacion": "2 JUAN",
         "prefijo": "2Jn"
     },
     {
         "nombre": "3ª. JUAN",
         "fileName": "3 JUAN.txt",
-        "abrev": "3 JUAN",
+        "abreviacion": "3 JUAN",
         "prefijo": "3Jn"
     },
     {
         "nombre": "JUDAS",
         "fileName": "JUDAS.txt",
-        "abrev": "JUDAS",
+        "abreviacion": "JUDAS",
         "prefijo": "Jud"
     },
     {
         "nombre": "REVELACION (APOCALIPSIS)",
         "fileName": "REVELACION (APOCALIPSIS).txt",
-        "abrev": "REVELACION",
+        "abreviacion": "REVELACION",
         "prefijo": "Rev"
     }
 ]
