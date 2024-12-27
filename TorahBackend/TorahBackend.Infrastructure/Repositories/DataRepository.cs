@@ -9,6 +9,7 @@ namespace TorahBackend.Infrastructure.Repositories
         private readonly string _connectionString;
         private readonly IMongoDatabase? _database;
         private readonly IMongoCollection<Libro>? _libroCollection;
+        private readonly IMongoCollection<Usuario>? _usuarioCollection;
         private readonly ITorahJsonRepository _torahJsonRepository;
 
         public DataRepository(string connectionString, ITorahJsonRepository torahJsonRepository)
@@ -20,11 +21,14 @@ namespace TorahBackend.Infrastructure.Repositories
                 _torahJsonRepository = torahJsonRepository;
 
                 var mongoUrl = MongoUrl.Create(connectionString);
+
                 var mongoClient = new MongoClient(mongoUrl);
 
                 _database = mongoClient.GetDatabase(mongoUrl.DatabaseName);
 
                 _libroCollection = _database.GetCollection<Libro>("Libro");
+
+                _usuarioCollection = _database.GetCollection<Usuario>("Usuario");
             }
             catch
             {
@@ -43,9 +47,28 @@ namespace TorahBackend.Infrastructure.Repositories
 
                     await _libroCollection.InsertManyAsync(libros);
                 }
+
+                var existingUsers = await _usuarioCollection.Find(_ => true).ToListAsync();
+
+                if (existingUsers.Count < 1) {
+                    await _usuarioCollection.InsertOneAsync(new Usuario {
+                        Email="admin@admin.com",
+                        Password= "e43ceedc00c4b4259910a1a26ca45463"
+                    });
+                }
             }
             catch {
                 throw;
+            }
+        }
+
+        public async Task<Usuario> ObtenerUsuario(string email) {
+            try {
+                var usuario = await _usuarioCollection.FindAsync(x => x.Email == email).Result.SingleOrDefaultAsync();
+                return usuario;
+            }
+            catch { 
+                throw;  
             }
         }
     }
