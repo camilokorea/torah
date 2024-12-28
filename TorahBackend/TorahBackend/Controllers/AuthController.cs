@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TorahBackend.Application.DTO;
 using TorahBackend.Application.Interfaces;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace TorahBackend.WebApi.Controllers
 {
@@ -23,23 +21,15 @@ namespace TorahBackend.WebApi.Controllers
 
             var user = await _usuarioService.GetUsuario(request.Email);
 
-            StringBuilder hash = new StringBuilder();
-
-            MD5CryptoServiceProvider md5provider = new MD5CryptoServiceProvider();
-
-            byte[] bytes = md5provider.ComputeHash(new UTF8Encoding().GetBytes(request.Password));
-
-            for (int i = 0; i < bytes.Length; i++)
+            if (!_usuarioService.Authenticate(user, request.Password))
             {
-                hash.Append(bytes[i].ToString("x2")); //lowerCase; X2 if uppercase desired
-            }
-
-            if (user == null || hash.ToString() != user.Password)
                 return Unauthorized(new { message = "Credenciales incorrectas." });
+            }
+            else {
+                var token = _usuarioService.GenerateJwtToken(user);
 
-            var token = _usuarioService.GenerateJwtToken(user);
-
-            return Ok(new { token });
+                return Ok(new { token });
+            }
         }
     }
 }
