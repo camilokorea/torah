@@ -71,5 +71,19 @@ namespace TorahBackend.Infrastructure.Repositories
                 throw;  
             }
         }
+
+        public async Task<List<Libro>> ObtenerLibros()
+        {
+            try
+            {
+                var libros = await _libroCollection.FindAsync(_ => true);
+                return libros.ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
     }
 }

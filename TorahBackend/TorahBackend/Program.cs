@@ -17,9 +17,13 @@ var dataRepository = new DataRepository(connectionString, torahJsonRepository);
 
 var usuarioService = new UsuarioService(dataRepository, builder.Configuration["Jwt:Key"]);
 
+var libroService = new LibroService(dataRepository);
+
 builder.Services.AddScoped<IDataRepository>(provider => dataRepository);
 
 builder.Services.AddScoped<IUsuarioService>(provider => usuarioService);
+
+builder.Services.AddScoped<ILibroService>(provider => libroService);
 
 builder.Services.AddScoped<ITorahJsonRepository>(provider => torahJsonRepository);
 

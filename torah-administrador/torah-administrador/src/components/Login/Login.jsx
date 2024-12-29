@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/AuthProvider";
-import { Form, Button, Card, Container, Row, Col } from "react-bootstrap";
+import { useAuth } from "../../hooks/AuthProvider";
+import { Form, Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.css';
 

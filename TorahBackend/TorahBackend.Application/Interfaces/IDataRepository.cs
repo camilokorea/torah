@@ -7,5 +7,6 @@ namespace TorahBackend.Application.Interfaces
     {
         Task DataSeed();
         Task<Usuario> ObtenerUsuario(string email);
+        Task<List<Libro>> ObtenerLibros();
     }
 }
