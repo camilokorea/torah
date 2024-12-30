@@ -53,7 +53,7 @@ namespace TorahBackend.Infrastructure.Repositories
                 if (existingUsers.Count < 1) {
                     await _usuarioCollection.InsertOneAsync(new Usuario {
                         Email="admin@admin.com",
-                        Password= "e43ceedc00c4b4259910a1a26ca45463"
+                        Password= "a5a2b5f65bcd9bde0a3943774e4cc2fc"
                     });
                 }
             }
@@ -62,7 +62,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task<Usuario> ObtenerUsuario(string email) {
+        public async Task<Usuario> GetUsuario(string email) {
             try {
                 var usuario = await _usuarioCollection.FindAsync(x => x.Email == email).Result.SingleOrDefaultAsync();
                 return usuario;
@@ -72,7 +72,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task<List<Libro>> ObtenerLibros()
+        public async Task<List<Libro>> ListLibros()
         {
             try
             {
@@ -84,6 +84,20 @@ namespace TorahBackend.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public async Task<Libro> ListLibro(string id)
+        {
+            try
+            {
+                var libro = await _libroCollection.FindAsync(_x => _x.Id == id);
+                return libro.SingleOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
 
     }
 }

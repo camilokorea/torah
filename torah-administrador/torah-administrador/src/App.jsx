@@ -1,7 +1,8 @@
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
+import LibroEditar from './components/LibroEditar/LibroEditar';
 import AuthProvider from "./hooks/AuthProvider";
 import PrivateRoute from "./router/route";
 
@@ -15,6 +16,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route element={<PrivateRoute />}>
                             <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/libro/:id" element={<LibroEditar />} />
                         </Route>
                     </Routes>
                 </AuthProvider>

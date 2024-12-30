@@ -14,13 +14,12 @@ namespace TorahBackend.Application.Services
         public LibroService(IDataRepository dataRepository) {
             _dataRepository = dataRepository;
         }
-
-        public async Task<List<LibroInfo>> ObtenerLibros()
+        public async Task<List<LibroInfo>> List()
         {
             try { 
                 var list = new List<LibroInfo>();
 
-                var librosRecords = await _dataRepository.ObtenerLibros();
+                var librosRecords = await _dataRepository.ListLibros();
 
                 if (librosRecords != null) 
                 {
@@ -39,6 +38,41 @@ namespace TorahBackend.Application.Services
                 return list;
             }
             catch { 
+                throw;
+            }
+        }
+
+        public async Task<LibroDetalle> Get(string id)
+        {
+            try
+            {
+                var libroRecord = await _dataRepository.ListLibro(id);
+
+                LibroDetalle libro = new LibroDetalle();
+
+                if (libroRecord != null)
+                {
+                    libro.Id = libroRecord.Id;
+                    libro.Nombre = libroRecord.Nombre;
+                    libro.Abreviacion = libroRecord.Abreviacion;
+
+                    foreach (var item in libroRecord.Capitulos)
+                    {
+                        libro.Capitulos.Add(new CapituloDetalle
+                        {
+                            CapituloNumero = item.CapituloNumero,
+                            Versiculos = item.Versiculos
+                        });
+                    }
+                }
+                else {
+                    libro = null;
+                }
+
+                return libro;
+            }
+            catch
+            {
                 throw;
             }
         }

@@ -6,7 +6,8 @@ namespace TorahBackend.Application.Interfaces
     public interface IDataRepository
     {
         Task DataSeed();
-        Task<Usuario> ObtenerUsuario(string email);
-        Task<List<Libro>> ObtenerLibros();
+        Task<Usuario> GetUsuario(string email);
+        Task<List<Libro>> ListLibros();
+        Task<Libro> ListLibro(string id);
     }
 }

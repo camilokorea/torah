@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
 
     const loginAction = async (data) => {
         try {
-            const response = await fetch("https://localhost:7116/login", {
+            const response = await fetch("https://localhost:7116/api/Auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
                 body: JSON.stringify(data),
             });
             const res = await response.json();
+
             if (res.token) {
                 setUser(data.email);
                 setToken(res.token);

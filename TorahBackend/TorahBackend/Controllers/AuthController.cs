@@ -4,6 +4,7 @@ using TorahBackend.Application.Interfaces;
 
 namespace TorahBackend.WebApi.Controllers
 {
+    [Route("api/[controller]")]
     public class AuthController: ControllerBase
     {
         private readonly IUsuarioService _usuarioService;

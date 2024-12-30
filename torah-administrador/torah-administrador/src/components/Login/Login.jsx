@@ -39,7 +39,6 @@ const Login = () => {
                         <Form.Label>Username</Form.Label>
                         <Form.Control
                             type="email"
-                            id="user-email"
                             name="email"
                             onChange={handleInput}
                             placeholder="example@yahoo.com"

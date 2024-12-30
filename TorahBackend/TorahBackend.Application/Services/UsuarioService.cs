@@ -20,7 +20,7 @@ namespace TorahBackend.Application.Services
         public async Task<Usuario> GetUsuario(string email)
         {
             try { 
-                return await _dataRepository.ObtenerUsuario(email);
+                return await _dataRepository.GetUsuario(email);
             }
             catch {
                 throw;
