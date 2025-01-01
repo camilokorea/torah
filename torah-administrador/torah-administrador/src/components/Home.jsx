@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
-import './LibrosGrid.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { UseLibroCrud } from '../../hooks/UseLibroCrud';
+import { UseLibroCrud } from '../hooks/UseLibroCrud';
 
-const LibrosGrid = () => {
-
+const Home = () => {
     const {
         libros,
         loading,
@@ -48,4 +46,4 @@ const LibrosGrid = () => {
     );
 };
 
-export default LibrosGrid;
+export default Home;

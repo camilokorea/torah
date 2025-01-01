@@ -1,0 +1,8 @@
+.libro-detalle-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    min-height: 100vh;
+    padding: 20px;
+    width: 100vw;
+}
