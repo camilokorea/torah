@@ -9,8 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth(); // Consumimos el estado de autenticación
 
-  console.log(isAuthenticated);
-
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 

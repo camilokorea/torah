@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 import { Container, Row, Col, Nav, Button, Offcanvas } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
-import Home from './Home';
-import Profile from './Profile';
-import Settings from './Settings';
-import Help from './Help';
+import Torah from './Torah';
+import Dedicatoria from './Dedicatoria';
+import Glosario from './Glosario';
 
 const AuthenticatedLayout = () => {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -18,7 +17,7 @@ const AuthenticatedLayout = () => {
                 {/* Botón de menú hamburguesa en móviles */}
                 <Button
                     variant="primary"
-                    className="d-md-none mb-2"
+                    className="d-md-none mb-2 z-1 position-fixed top-0"
                     onClick={() => setShowSidebar(true)}
                 >
                     Menú
@@ -36,16 +35,13 @@ const AuthenticatedLayout = () => {
                     <Offcanvas.Body>
                         <Nav className="flex-column">
                             <Nav.Link as={NavLink} to="/" end onClick={() => setShowSidebar(false)}>
-                                Inicio
+                                Torah
                             </Nav.Link>
-                            <Nav.Link as={NavLink} to="/profile" onClick={() => setShowSidebar(false)}>
-                                Perfil
+                            <Nav.Link as={NavLink} to="/dedicatoria" onClick={() => setShowSidebar(false)}>
+                                Dedicatoria
                             </Nav.Link>
-                            <Nav.Link as={NavLink} to="/settings" onClick={() => setShowSidebar(false)}>
-                                Configuración
-                            </Nav.Link>
-                            <Nav.Link as={NavLink} to="/help" onClick={() => setShowSidebar(false)}>
-                                Ayuda
+                            <Nav.Link as={NavLink} to="/glosario" onClick={() => setShowSidebar(false)}>
+                                Glosario
                             </Nav.Link>
                             <Button variant="danger" onClick={logout} className="mt-3">
                                 Cerrar Sesión
@@ -55,19 +51,16 @@ const AuthenticatedLayout = () => {
                 </Offcanvas>
 
                 {/* Menú lateral para pantallas grandes */}
-                <Col xs={3} sm={3} md={2} lg={2} className="bg-light vh-100 d-none d-md-block">
+                <Col xs={3} sm={3} md={2} lg={2} className="bg-light vh-100 d-none d-md-block position-fixed top-0">
                     <Nav className="flex-column p-3">
                         <Nav.Link as={NavLink} to="/" end>
-                            Inicio
+                            Torah
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/profile">
-                            Perfil
+                        <Nav.Link as={NavLink} to="/dedicatoria">
+                            Dedicatoria
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/settings">
-                            Configuración
-                        </Nav.Link>
-                        <Nav.Link as={NavLink} to="/help">
-                            Ayuda
+                        <Nav.Link as={NavLink} to="/glosario">
+                            Glosario
                         </Nav.Link>
                         <Button variant="danger" onClick={logout} className="mt-3">
                             Cerrar Sesión
@@ -76,12 +69,11 @@ const AuthenticatedLayout = () => {
                 </Col>
 
                 {/* Contenido principal */}
-                <Col xs={12} sm={12} md={10} lg={10} className="p-4">
+                <Col xs={12} sm={12} md={10} lg={10} className="p-4 right-absolute">
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/help" element={<Help />} />
+                        <Route path="/" element={<Torah />} />
+                        <Route path="/dedicatoria" element={<Dedicatoria />} />
+                        <Route path="/glosario" element={<Glosario />} />
                     </Routes>
                 </Col>
             </Row>
