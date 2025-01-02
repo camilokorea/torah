@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import Torah from './Torah';
 import Dedicatoria from './Dedicatoria';
 import Glosario from './Glosario';
+import Libro from './Libro';
 
 const AuthenticatedLayout = () => {
     const [showSidebar, setShowSidebar] = useState(false);
@@ -72,6 +73,7 @@ const AuthenticatedLayout = () => {
                 <Col xs={12} sm={12} md={10} lg={10} className="p-4 right-absolute">
                     <Routes>
                         <Route path="/" element={<Torah />} />
+                        <Route path="/libro/:id" element={<Libro />} />
                         <Route path="/dedicatoria" element={<Dedicatoria />} />
                         <Route path="/glosario" element={<Glosario />} />
                     </Routes>

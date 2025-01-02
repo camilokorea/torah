@@ -9,7 +9,8 @@ const Torah = () => {
     const {
         libros,
         loading,
-        error
+        error,
+        fetchLibros
     } = UseLibroCrud();
 
     useEffect(() => {
@@ -17,6 +18,10 @@ const Torah = () => {
             toast.error(error, { position: "bottom-right" });
         }
     }, [error]);
+
+    useEffect(() => {
+        fetchLibros();
+    }, []);
 
     return (
         <Container>

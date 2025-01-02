@@ -31,10 +31,14 @@ export const UseLibroCrud = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(API_URL + '/get?id=' + id);
-      if (!response.ok) throw new Error('Error al obtener libro');
-      const data = await response.json();
-      setLibro(data);
+      const response = await fetch(API_URL + 'get?id=' + id);
+
+      if (!response.ok) {
+        setError('Error obteniendo datos del libro');
+      } else {
+        const data = await response.json();
+        setLibro(data);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -63,11 +67,6 @@ export const UseLibroCrud = () => {
       setLoading(false);
     }
   };
-
-  // Fetch inicial de libros al montar el componente
-  useEffect(() => {
-    fetchLibros();
-  }, []);
 
   return {
     libros,
