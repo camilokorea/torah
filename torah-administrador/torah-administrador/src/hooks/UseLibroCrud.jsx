@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { UseAuth } from './UseAuth';
 
 // URL base del API
 const API_URL = 'https://localhost:7116/api/Libro/';
 
 // Custom Hook
 export const UseLibroCrud = () => {
+  const {
+    token
+  } = UseAuth();
+
   const [libros, setLibros] = useState([]);
   const [libro, setLibro] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingCrud, setLoadingCrud] = useState(false);
   const [errorLibro, setErrorLibro] = useState(null);
+  const [errorCrud, setErrorCrud] = useState(null);
+  const [crudDone, setCrudDone] = useState(false);
   const [errorLibros, setErrorLibros] = useState(null);
 
   // Obtener todos los libros
@@ -55,11 +62,12 @@ export const UseLibroCrud = () => {
   // Actualizar un libro existente
   const actualizarNombre = async (id, nombre) => {
     setLoadingCrud(true);
-    setError(null);
+    setErrorCrud(null);
+    setCrudDone(false);
     try {
       const response = await fetch(API_URL + 'actualizar/nombre', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify(
           {
             id: id,
@@ -67,19 +75,23 @@ export const UseLibroCrud = () => {
           }),
       });
 
+      console.log(response);
+
       if (!response.ok) {
-        setError('Se produjo un error al tratar de actualizar el nombre de libro.');
+        setErrorCrud('Se produjo un error al tratar de actualizar el nombre de libro: ' + response.status + ' ' + response.statusText);
       } else {
-        setError(null);
+        setErrorCrud(null);
+        setCrudDone(true);
         setLibro((prev) => {
           prev.nombre = nombre;
           return prev;
         });
       }
     } catch (err) {
-      setError(err.message);
+      setErrorCrud(err.message);
     } finally {
       setLoadingCrud(false);
+      setCrudDone(false);
     }
   };
 
@@ -89,7 +101,9 @@ export const UseLibroCrud = () => {
     loading,
     loadingCrud,
     errorLibro,
+    errorCrud,
     errorLibros,
+    crudDone,
     fetchLibros,
     fetchLibro,
     actualizarNombre

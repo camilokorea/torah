@@ -19,16 +19,11 @@ const Libro = () => {
         loading,
         loadingCrud,
         errorLibro,
+        errorCrud,
+        crudDone,
         fetchLibro,
         actualizarNombre
     } = UseLibroCrud();
-
-    useEffect(() => {
-        if (errorLibro) {
-            toast.error(errorLibro, { position: "bottom-right" });
-        }
-    }, [errorLibro]);
-
     const handleCloseModalLibroTitulo = () => setShowModalLibroTitulo(false);
     const handleShowModalLibroTitulo = () => setShowModalLibroTitulo(true);
 
@@ -37,12 +32,18 @@ const Libro = () => {
         actualizarNombre(libro?.id, libroTituloInputValue);
     };
 
-    useEffect(async () => {
-        if (!hasFetched.current) {            
-            await fetchLibro(id);
+    useEffect(() => {
+        if (!hasFetched.current) {
+            fetchLibro(id);
             hasFetched.current = true;
         }
     }, []);
+
+    useMemo(() => {
+        if (errorLibro) {
+            toast.error(errorLibro, { position: "bottom-right" });
+        }
+    }, [errorLibro]);
 
     useMemo(() => {
         if (libro?.nombre) {
@@ -51,17 +52,22 @@ const Libro = () => {
     }, [libro]);
 
     useMemo(() => {
-        if (loadingCrud) {
+        if (loadingCrud === true) {
             toast.info("Salvando cambios...", { position: "bottom-right" });
-        } else {
-            if (errorLibro) {
-                toast.error("Hubo un problema salvando el nombre de libro: " + errorLibro, { position: "bottom-right" });
-            } else {
-                toast.success("Nombre de libro salvado satisfactoriamente", { position: "bottom-right" });
-                setShowModalLibroTitulo(false)
-            }
         }
     }, [loadingCrud]);
+
+    useMemo(() => {
+        if (errorCrud) {
+            toast.error("Hubo un problema salvando el nombre de libro: " + errorCrud, { position: "bottom-right" });
+        }
+    }, [errorCrud]);
+
+    useMemo(() => {
+        if (crudDone === true) {
+            toast.success("Nombre de libro salvado satisfactoriamente", { position: "bottom-right" });
+        }
+    }, [crudDone]);
 
     const handleChangeLibroTituloInputValue = (e) => {
         setLibroTituloInputValue(e.target.value);

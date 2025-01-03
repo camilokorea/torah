@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TorahBackend.Application.DTO;
 using TorahBackend.Application.Interfaces;
 
@@ -32,6 +33,7 @@ namespace TorahBackend.WebApi.Controllers
             return Ok(libro);
         }
 
+        [Authorize]
         [HttpPatch("actualizar/nombre")]
         public async Task<IActionResult> ActualizarNombre([FromBody] LibroNombre payload)
         {
