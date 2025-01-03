@@ -98,6 +98,20 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
+        public async Task UpdateNombreLibro(string id, string nombre) 
+        {
+            try
+            {
+                var filter = Builders<Libro>.Filter.Eq(x => x.Id, id);
 
+                var update = Builders<Libro>.Update.Set(x => x.Nombre, nombre);
+
+                await _libroCollection.UpdateOneAsync(filter, update);
+            } 
+            catch 
+            {
+                throw;
+            }
+        }
     }
 }

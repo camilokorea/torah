@@ -7,5 +7,7 @@ namespace TorahBackend.Application.Interfaces
         Task <List<LibroInfo>> List();
 
         Task<LibroDetalle> Get(string id);
+
+        Task ActualizarNombre(string id, string nombre);
     }
 }

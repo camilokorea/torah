@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TorahBackend.Application.DTO;
 using TorahBackend.Application.Interfaces;
 
 namespace TorahBackend.WebApi.Controllers
@@ -29,6 +30,13 @@ namespace TorahBackend.WebApi.Controllers
             }
 
             return Ok(libro);
+        }
+
+        [HttpPatch("actualizar/nombre")]
+        public async Task<IActionResult> ActualizarNombre([FromBody] LibroNombre payload)
+        {
+            await _libroService.ActualizarNombre(payload.Id, payload.Nombre);
+            return Ok(true);
         }
     }
 }

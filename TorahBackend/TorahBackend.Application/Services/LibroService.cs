@@ -76,5 +76,17 @@ namespace TorahBackend.Application.Services
                 throw;
             }
         }
+
+        public async Task ActualizarNombre(string id, string nombre)
+        {
+            try
+            {
+                await _dataRepository.UpdateNombreLibro(id, nombre);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

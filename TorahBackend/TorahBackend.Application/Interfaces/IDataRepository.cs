@@ -9,5 +9,6 @@ namespace TorahBackend.Application.Interfaces
         Task<Usuario> GetUsuario(string email);
         Task<List<Libro>> ListLibros();
         Task<Libro> ListLibro(string id);
+        Task UpdateNombreLibro(string id, string nombre);
     }
 }
