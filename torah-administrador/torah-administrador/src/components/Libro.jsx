@@ -66,6 +66,7 @@ const Libro = () => {
     useMemo(() => {
         if (crudDone === true) {
             toast.success("Nombre de libro salvado satisfactoriamente", { position: "bottom-right" });
+            handleCloseModalLibroTitulo();
         }
     }, [crudDone]);
 

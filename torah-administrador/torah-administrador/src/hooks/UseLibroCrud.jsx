@@ -92,7 +92,6 @@ export const UseLibroCrud = () => {
       setErrorCrud(err.message);
     } finally {
       setLoadingCrud(false);
-      setCrudDone(false);
     }
   };
 
