@@ -10,5 +10,6 @@ namespace TorahBackend.Application.Interfaces
         Task<List<Libro>> ListLibros();
         Task<Libro> ListLibro(string id);
         Task UpdateNombreLibro(string id, string nombre);
+        Task UpdateAbreviaturaLibro(string id, string abreviatura);
     }
 }

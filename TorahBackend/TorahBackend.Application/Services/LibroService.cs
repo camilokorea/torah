@@ -88,5 +88,17 @@ namespace TorahBackend.Application.Services
                 throw;
             }
         }
+
+        public async Task ActualizarAbreviatura(string id, string abreviatura)
+        {
+            try
+            {
+                await _dataRepository.UpdateAbreviaturaLibro(id, abreviatura);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

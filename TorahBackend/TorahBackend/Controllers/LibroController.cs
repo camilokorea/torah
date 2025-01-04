@@ -40,5 +40,13 @@ namespace TorahBackend.WebApi.Controllers
             await _libroService.ActualizarNombre(payload.Id, payload.Nombre);
             return Ok(true);
         }
+
+        [Authorize]
+        [HttpPatch("actualizar/abreviatura")]
+        public async Task<IActionResult> ActualizarAbreviatura([FromBody] LibroAbreviatura payload)
+        {
+            await _libroService.ActualizarAbreviatura(payload.Id, payload.Abreviatura);
+            return Ok(true);
+        }
     }
 }

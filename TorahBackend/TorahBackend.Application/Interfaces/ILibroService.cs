@@ -9,5 +9,7 @@ namespace TorahBackend.Application.Interfaces
         Task<LibroDetalle> Get(string id);
 
         Task ActualizarNombre(string id, string nombre);
+
+        Task ActualizarAbreviatura(string id, string abreviatura);
     }
 }

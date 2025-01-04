@@ -113,5 +113,21 @@ namespace TorahBackend.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public async Task UpdateAbreviaturaLibro(string id, string abreviatura)
+        {
+            try
+            {
+                var filter = Builders<Libro>.Filter.Eq(x => x.Id, id);
+
+                var update = Builders<Libro>.Update.Set(x => x.Abreviacion, abreviatura);
+
+                await _libroCollection.UpdateOneAsync(filter, update);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

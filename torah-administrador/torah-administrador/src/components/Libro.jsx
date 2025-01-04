@@ -12,7 +12,9 @@ import Form from 'react-bootstrap/Form';
 const Libro = () => {
     const { id } = useParams();
     const [showModalLibroTitulo, setShowModalLibroTitulo] = useState(false);
+    const [showModalLibroAbreviatura, setShowModalLibroAbreviatura] = useState(false);
     const [libroTituloInputValue, setLibroTituloInputValue] = useState('');
+    const [libroAbreviaturaInputValue, setLibroAbreviaturaInputValue] = useState('');
     const hasFetched = useRef(false);
     const {
         libro,
@@ -22,14 +24,32 @@ const Libro = () => {
         errorCrud,
         crudDone,
         fetchLibro,
-        actualizarNombre
+        actualizarNombre,
+        actualizarAbreviatura
     } = UseLibroCrud();
+
     const handleCloseModalLibroTitulo = () => setShowModalLibroTitulo(false);
     const handleShowModalLibroTitulo = () => setShowModalLibroTitulo(true);
+
+    const handleCloseModalLibroAbreviatura = () => setShowModalLibroAbreviatura(false);
+    const handleShowModalLibroAbreviatura = () => setShowModalLibroAbreviatura(true);
 
     const handleUpdateLibroTitulo = (e) => {
         e.preventDefault();
         actualizarNombre(libro?.id, libroTituloInputValue);
+    };
+
+    const handleUpdateLibroAbreviatura = (e) => {
+        e.preventDefault();
+        actualizarAbreviatura(libro?.id, libroAbreviaturaInputValue);
+    };
+
+    const handleChangeLibroTituloInputValue = (e) => {
+        setLibroTituloInputValue(e.target.value);
+    };
+
+    const handleChangeLibroAbreviaturaInputValue = (e) => {
+        setLibroAbreviaturaInputValue(e.target.value);
     };
 
     useEffect(() => {
@@ -49,6 +69,10 @@ const Libro = () => {
         if (libro?.nombre) {
             setLibroTituloInputValue(libro?.nombre);
         }
+
+        if (libro?.abreviacion) {
+            setLibroAbreviaturaInputValue(libro?.abreviacion);
+        }
     }, [libro]);
 
     useMemo(() => {
@@ -59,20 +83,17 @@ const Libro = () => {
 
     useMemo(() => {
         if (errorCrud) {
-            toast.error("Hubo un problema salvando el nombre de libro: " + errorCrud, { position: "bottom-right" });
+            toast.error("Hubo un problema salvando datos de libro: " + errorCrud, { position: "bottom-right" });
         }
     }, [errorCrud]);
 
     useMemo(() => {
         if (crudDone === true) {
-            toast.success("Nombre de libro salvado satisfactoriamente", { position: "bottom-right" });
+            toast.success("Datos de libro salvado satisfactoriamente", { position: "bottom-right" });
             handleCloseModalLibroTitulo();
+            handleCloseModalLibroAbreviatura();
         }
     }, [crudDone]);
-
-    const handleChangeLibroTituloInputValue = (e) => {
-        setLibroTituloInputValue(e.target.value);
-    };
 
     return (
         <div>
@@ -96,7 +117,7 @@ const Libro = () => {
                                         </Row>
                                         <Row className="d-flex justify-content-left align-items-left">
                                             <Col xs={3} sm={2} md={2} lg={1}>
-                                                <Button variant="primary" size="sm">
+                                                <Button variant="primary" size="sm" onClick={handleShowModalLibroAbreviatura}>
                                                     <FaPencilAlt />
                                                 </Button>
                                             </Col>
@@ -163,6 +184,46 @@ const Libro = () => {
                         ) : null}
                     </Button>
                     <Button variant="primary" onClick={handleUpdateLibroTitulo} disabled={loadingCrud}>
+                        {!loadingCrud ? "Guardar Cambios" : "Cargando"}
+                        {loadingCrud ? (
+                            <Spinner
+                                style={{ width: "0.7rem", height: "0.7rem" }}
+                                type="grow"
+                                color="light"
+                            />
+                        ) : null}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showModalLibroAbreviatura} onHide={handleCloseModalLibroAbreviatura}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Editar abreviatura de Libro bíblico</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleUpdateLibroAbreviatura}>
+                        <Form.Group className="mb-3" controlId="LibroAbreviaturaForm">
+                            <Form.Label>Abreviatura de Libro</Form.Label>
+                            <Form.Control
+                                type="text"
+                                autoFocus
+                                value={libroAbreviaturaInputValue || ""}
+                                onChange={handleChangeLibroAbreviaturaInputValue}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" type="submit" disabled={loadingCrud} onClick={handleCloseModalLibroAbreviatura}>
+                        {!loadingCrud ? "Cerrar" : "Cargando"}
+                        {loadingCrud ? (
+                            <Spinner
+                                style={{ width: "0.7rem", height: "0.7rem" }}
+                                type="grow"
+                                color="light"
+                            />
+                        ) : null}
+                    </Button>
+                    <Button variant="primary" onClick={handleUpdateLibroAbreviatura} disabled={loadingCrud}>
                         {!loadingCrud ? "Guardar Cambios" : "Cargando"}
                         {loadingCrud ? (
                             <Spinner

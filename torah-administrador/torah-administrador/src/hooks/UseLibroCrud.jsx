@@ -95,6 +95,42 @@ export const UseLibroCrud = () => {
     }
   };
 
+  // Actualizar un libro existente
+  const actualizarAbreviatura = async (id, abreviatura) => {
+    setLoadingCrud(true);
+    setErrorCrud(null);
+    setCrudDone(false);
+    try {
+      const response = await fetch(API_URL + 'actualizar/abreviatura', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(
+          {
+            id: id,
+            abreviatura: abreviatura
+          }),
+      });
+
+      if (!response.ok) {
+        setErrorCrud('Se produjo un error al tratar de actualizar la abreviatura de libro: ' + response.status + ' ' + response.statusText);
+      } else {
+        setErrorCrud(null);
+        setCrudDone(true);
+        setLibro((prev) => {
+          prev.abreviacion = abreviatura;
+          return prev;
+        });
+      }
+    } catch (err) {
+      setErrorCrud(err.message);
+    } finally {
+      setLoadingCrud(false);
+    }
+  };
+
   return {
     libros,
     libro,
@@ -106,6 +142,7 @@ export const UseLibroCrud = () => {
     crudDone,
     fetchLibros,
     fetchLibro,
-    actualizarNombre
+    actualizarNombre,
+    actualizarAbreviatura
   };
 };
