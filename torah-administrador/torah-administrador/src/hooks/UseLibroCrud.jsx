@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UseAuth } from './UseAuth';
+import { useAuth } from '../context/AuthContext';
 
 // URL base del API
 const API_URL = 'https://localhost:7116/api/Libro/';
@@ -8,7 +8,7 @@ const API_URL = 'https://localhost:7116/api/Libro/';
 export const UseLibroCrud = () => {
   const {
     token
-  } = UseAuth();
+  } = useAuth();
 
   const [libros, setLibros] = useState([]);
   const [libro, setLibro] = useState(null);
@@ -67,15 +67,16 @@ export const UseLibroCrud = () => {
     try {
       const response = await fetch(API_URL + 'actualizar/nombre', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(
           {
             id: id,
             nombre: nombre
           }),
       });
-
-      console.log(response);
 
       if (!response.ok) {
         setErrorCrud('Se produjo un error al tratar de actualizar el nombre de libro: ' + response.status + ' ' + response.statusText);

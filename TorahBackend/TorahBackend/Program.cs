@@ -1,21 +1,23 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.OpenApi.Models;
 using TorahBackend.Application.Interfaces;
 using TorahBackend.Application.Services;
 using TorahBackend.Infrastructure.Repositories;
+using TorahBackend.Domain.Entities;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
 
 var torahJsonRepository = new TorahJsonRepository();
 
 var dataRepository = new DataRepository(connectionString, torahJsonRepository);
 
-var usuarioService = new UsuarioService(dataRepository, builder.Configuration["Jwt:Key"]);
+var usuarioService = new UsuarioService(dataRepository, jwtConfig);
 
 var libroService = new LibroService(dataRepository);
 
@@ -31,11 +33,55 @@ builder.Services.AddScoped<ITorahJsonRepository>(provider => torahJsonRepository
 await dataRepository.DataSeed();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Torah_API",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = $@"JWT Authorization header using the Bearer scheme. 
+                        \r\n\r\n Enter prefix (Bearer), space, and then your token. 
+                        Example: 'Bearer 1231233kjsdlkajdksad'"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme {
+            Reference = new OpenApiReference{
+                Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string [] { }
+        }
+    });
+});
+
+/*
+var tokenValidationParameters = new TokenValidationParameters()
+{
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Secret)),
+    ValidateIssuer = false,
+    ValidateAudience = false,
+    RequireExpirationTime = false,
+    ValidateLifetime = true
+};
+
+builder.Services.AddSingleton(tokenValidationParameters);
+*/
 
 //services cors
 builder.Services.AddCors(options =>
@@ -48,23 +94,21 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configuración JWT
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
+// Agregar autenticación JWT
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
+        var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"]);
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -79,6 +123,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

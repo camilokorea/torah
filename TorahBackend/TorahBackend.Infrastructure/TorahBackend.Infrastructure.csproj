@@ -10,10 +10,4 @@
     <ProjectReference Include="..\TorahBackend.Application\TorahBackend.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="DataSeed\torah.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

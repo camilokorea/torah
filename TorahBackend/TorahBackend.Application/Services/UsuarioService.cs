@@ -5,16 +5,17 @@ using System.Text;
 using TorahBackend.Application.Interfaces;
 using TorahBackend.Domain.Entities;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Options;
 
 namespace TorahBackend.Application.Services
 {
     public class UsuarioService: IUsuarioService
     {
         private readonly IDataRepository _dataRepository;
-        private readonly string _jwtToken;
-        public UsuarioService(IDataRepository dataRepository, string jwtToken) {
+        private readonly JwtConfig _jwtConfig;
+        public UsuarioService(IDataRepository dataRepository, JwtConfig jwtConfig) {
             _dataRepository = dataRepository;
-            _jwtToken = jwtToken;
+            _jwtConfig = jwtConfig;
         }
 
         public async Task<Usuario> GetUsuario(string email)
@@ -30,18 +31,17 @@ namespace TorahBackend.Application.Services
         public string GenerateJwtToken(Usuario usuario) 
         {
             try {
-                var key = Encoding.ASCII.GetBytes(_jwtToken);
+                var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[]
                     {
-                    new Claim(ClaimTypes.NameIdentifier, usuario.Id),
-                    new Claim(ClaimTypes.Email, usuario.Email)
-                }),
+                        new Claim(ClaimTypes.Name, usuario.Email),
+                        new Claim(ClaimTypes.NameIdentifier, usuario.Id)
+                    }),
                     Expires = DateTime.UtcNow.AddHours(1),
-                    SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(key),
-                        SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
                 };
 
                 var tokenHandler = new JwtSecurityTokenHandler();

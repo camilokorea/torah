@@ -3,12 +3,11 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    const API_URL = 'https://localhost:7116/api/Auth/';
     const [token, setToken] = useState(sessionStorage.getItem("token") || "");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [user, setUser] = useState(sessionStorage.getItem("user") || "");
-    const API_URL = 'https://localhost:7116/api/Auth/';
-
     const [isAuthenticated, setIsAuthenticated] = useState(JSON.parse(sessionStorage.getItem('isAuthenticated')) || false);
 
     const login = async (userData) => {
@@ -60,16 +59,21 @@ export const AuthProvider = ({ children }) => {
             };
         } finally {
             setLoading(false);
-        }        
+        }
     };
 
     const logout = () => {
+        setToken(null);
+        setUser(null);
         setIsAuthenticated(false);
-        sessionStorage.removeItem('isAuthenticated');
+
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("isAuthenticated");
     };
 
     return (
-        <AuthContext.Provider value={{ loading, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ token, loading, user, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
