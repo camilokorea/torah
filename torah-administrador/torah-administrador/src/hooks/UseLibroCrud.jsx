@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
+import { UseHttpCodes } from '../hooks/UseHttpCodes';
+
 // URL base del API
 const API_URL = 'https://localhost:7116/api/Libro/';
 
@@ -9,6 +11,10 @@ export const UseLibroCrud = () => {
   const {
     token
   } = useAuth();
+
+  const {
+    codigosHttp
+  } = UseHttpCodes();
 
   const [libros, setLibros] = useState([]);
   const [libro, setLibro] = useState(null);
@@ -79,7 +85,7 @@ export const UseLibroCrud = () => {
       });
 
       if (!response.ok) {
-        setErrorCrud('Se produjo un error al tratar de actualizar el nombre de libro: ' + response.status + ' ' + response.statusText);
+        setErrorCrud('Se produjo un error al tratar de actualizar el nombre de libro: ' + response.status + ' ' + codigosHttp[response.status]);
       } else {
         setErrorCrud(null);
         setCrudDone(true);
@@ -115,7 +121,7 @@ export const UseLibroCrud = () => {
       });
 
       if (!response.ok) {
-        setErrorCrud('Se produjo un error al tratar de actualizar la abreviatura de libro: ' + response.status + ' ' + response.statusText);
+        setErrorCrud('Se produjo un error al tratar de actualizar la abreviatura de libro: ' + response.status + ' ' + codigosHttp[response.status]);
       } else {
         setErrorCrud(null);
         setCrudDone(true);

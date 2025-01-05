@@ -1,14 +1,20 @@
 import React, { createContext, useState, useContext } from 'react';
 
+import { UseHttpCodes } from '../hooks/UseHttpCodes';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const API_URL = 'https://localhost:7116/api/Auth/';
     const [token, setToken] = useState(sessionStorage.getItem("token") || "");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const [user, setUser] = useState(sessionStorage.getItem("user") || "");
     const [isAuthenticated, setIsAuthenticated] = useState(JSON.parse(sessionStorage.getItem('isAuthenticated')) || false);
+
+    const {
+        codigosHttp
+    } = UseHttpCodes();
 
     const login = async (userData) => {
         setLoading(true);
@@ -26,12 +32,7 @@ export const AuthProvider = ({ children }) => {
                 setToken(null);
                 setUser(null);
                 setIsAuthenticated(false);
-                setError(response.status + '-' + response.statusText);
-                return {
-                    authenticated: false,
-                    message: error,
-                    error: true
-                };
+                setError(response.status + '-' + codigosHttp[response.status]);
             } else {
                 const data = await response.json();
                 setToken(data.token);
@@ -41,22 +42,12 @@ export const AuthProvider = ({ children }) => {
                 sessionStorage.setItem("token", data.token);
                 sessionStorage.setItem("username", userData.email);
                 sessionStorage.setItem("isAuthenticated", "true");
-                return {
-                    authenticated: true,
-                    message: 'autenticado',
-                    error: false
-                };
             }
         } catch (err) {
             setToken(null);
             setUser(null);
             setIsAuthenticated(false);
             setError(err.message);
-            return {
-                authenticated: false,
-                message: err.message,
-                error: true
-            };
         } finally {
             setLoading(false);
         }
@@ -73,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, loading, user, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ token, loading, error, user, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

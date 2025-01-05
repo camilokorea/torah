@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Form, Button, Container, Row } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -6,25 +6,36 @@ import Spinner from 'react-bootstrap/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
-  const { loading, login } = useAuth(); // Consumimos el contexto
   const navigate = useNavigate();
+
+  const {
+    loading,
+    login,
+    error,
+    isAuthenticated
+  } = useAuth();
+
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
 
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    let response = await login(input);
-
-    if (response.authenticated) {
-      navigate('/');
-    } else {
-      toast.error(response.message, { position: "bottom-right" });
+  useMemo(() => {
+    if (error) {
+      toast.error(error, { position: "bottom-right" });
     }
+  }, [error]);
+
+  useMemo(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated]);
 
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login(input);
   };
 
   const handleInput = (e) => {
