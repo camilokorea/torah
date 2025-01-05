@@ -28,10 +28,11 @@ const Login = () => {
 
   useMemo(() => {
     if (isAuthenticated) {
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
     }
   }, [isAuthenticated]);
-
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -53,8 +54,10 @@ const Login = () => {
         <h2>Sistema Administrador Torah Ministerio Menorah</h2>
       </Row>
       <Row className="d-flex justify-content-center align-items-center">
-        {loading ? (<Spinner animation="border" variant="primary" />) :
-          (
+        {(() => {
+          if (loading) return <Spinner animation="border" variant="primary" />;
+          if (isAuthenticated) return (<div className="d-flex justify-content-center align-items-center"><Spinner animation="border" variant="primary" />&nbsp;<p>Autenticado...Redireccionando</p></div>);
+          return (
             <Form onSubmit={handleLogin}>
               <Form.Group className="mb-3" controlId="username">
                 <Form.Label>Username</Form.Label>
@@ -86,7 +89,8 @@ const Login = () => {
                 </Button>
               </div>
             </Form>
-          )}
+          );
+        })()}
       </Row>
     </Container>
   );
