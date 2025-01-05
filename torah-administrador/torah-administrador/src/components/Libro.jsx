@@ -13,8 +13,15 @@ const Libro = () => {
     const { id } = useParams();
     const [showModalLibroTitulo, setShowModalLibroTitulo] = useState(false);
     const [showModalLibroAbreviatura, setShowModalLibroAbreviatura] = useState(false);
+    const [showModalLibroVersiculo, setShowModalLibroVersiculo] = useState(false);
     const [libroTituloInputValue, setLibroTituloInputValue] = useState('');
     const [libroAbreviaturaInputValue, setLibroAbreviaturaInputValue] = useState('');
+    const [libroVersiculoInputValue, setLibroVersiculoInputValue] = useState({
+        libroId: '',
+        capituloNumero: null,
+        versiculo: ''
+    });
+
     const hasFetched = useRef(false);
     const {
         libro,
@@ -33,6 +40,16 @@ const Libro = () => {
 
     const handleCloseModalLibroAbreviatura = () => setShowModalLibroAbreviatura(false);
     const handleShowModalLibroAbreviatura = () => setShowModalLibroAbreviatura(true);
+
+    const handleCloseModalLibroVersiculo = () => setShowModalLibroVersiculo(false);
+    const handleShowModalLibroVersiculo = (libroId, capituloNumero, versiculo, versiculoNumero) => {
+        console.log(libroId);
+        console.log(capituloNumero);
+        console.log(versiculo);
+        console.log(versiculoNumero);
+
+        setShowModalLibroVersiculo(true);
+    };
 
     const handleUpdateLibroTitulo = (e) => {
         e.preventDefault();
@@ -136,7 +153,7 @@ const Libro = () => {
                                                         <Container key={String(capitulo.capituloNumero) + '-' + String(indexVersiculo.toString())}>
                                                             <Row className="d-flex justify-content-left align-items-left">
                                                                 <Col xs={3} sm={2} md={2} lg={1}>
-                                                                    <Button variant="primary" size="sm">
+                                                                    <Button variant="primary" size="sm" onClick={() => handleShowModalLibroVersiculo(id, capitulo.capituloNumero, versiculo, indexVersiculo)}>
                                                                         <FaPencilAlt />
                                                                     </Button>
                                                                 </Col>
