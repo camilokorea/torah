@@ -65,7 +65,7 @@ export const UseLibroCrud = () => {
     }
   };
 
-  // Actualizar un libro existente
+  // Actualizar nombre de libro
   const actualizarNombre = async (id, nombre) => {
     setLoadingCrud(true);
     setErrorCrud(null);
@@ -101,7 +101,7 @@ export const UseLibroCrud = () => {
     }
   };
 
-  // Actualizar un libro existente
+  // Actualizar abreviatura de libro
   const actualizarAbreviatura = async (id, abreviatura) => {
     setLoadingCrud(true);
     setErrorCrud(null);
@@ -137,6 +137,44 @@ export const UseLibroCrud = () => {
     }
   };
 
+  // Actualizar abreviatura de libro
+  const actualizarVersiculo = async (id, capituloNumero, versiculoNumero, versiculo) => {
+    setLoadingCrud(true);
+    setErrorCrud(null);
+    setCrudDone(false);
+    try {
+      const response = await fetch(API_URL + 'actualizar/versiculo', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(
+          {
+            id: id,
+            capituloNumero: capituloNumero,
+            versiculoNumero: versiculoNumero,
+            versiculo: versiculo
+          }),
+      });
+
+      if (!response.ok) {
+        setErrorCrud('Se produjo un error al tratar de actualizar el versículo: ' + response.status + ' ' + codigosHttp[response.status]);
+      } else {
+        debugger
+        setErrorCrud(null);
+        setCrudDone(true);
+        setLibro((prev) => {
+          return prev;
+        });
+      }
+    } catch (err) {
+      setErrorCrud(err.message);
+    } finally {
+      setLoadingCrud(false);
+    }
+  };
+
   return {
     libros,
     libro,
@@ -149,6 +187,7 @@ export const UseLibroCrud = () => {
     fetchLibros,
     fetchLibro,
     actualizarNombre,
-    actualizarAbreviatura
+    actualizarAbreviatura,
+    actualizarVersiculo
   };
 };

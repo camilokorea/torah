@@ -1,6 +1,8 @@
 ﻿using TorahBackend.Application.Interfaces;
 using MongoDB.Driver;
 using TorahBackend.Domain.Entities;
+using MongoDB.Bson;
+using System.Reflection.Metadata;
 
 namespace TorahBackend.Infrastructure.Repositories
 {
@@ -129,5 +131,44 @@ namespace TorahBackend.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public async Task UpdateVersiculoLibro(string id, int capituloNumero, int versiculoNumero, string versiculo)
+        {
+            try
+            {
+                // Create the filter to match the document and specific capítulo
+                var filter = Builders<Libro>.Filter.And(
+                     Builders<Libro>.Filter.Eq(l => l.Id, id),
+                     Builders<Libro>.Filter.ElemMatch(
+                         l => l.Capitulos,
+                         c => c.CapituloNumero == capituloNumero
+                     )
+                 );
+
+                // Define the update to set the specific versículo
+                var update = Builders<Libro>.Update.Set(
+                    $"Capitulos.$[capitulo].Versiculos.{versiculoNumero}",
+                    versiculo
+                );
+
+                // Define array filters
+                var arrayFilters = new[]
+                {
+                    new BsonDocumentArrayFilterDefinition<BsonDocument>(
+                        new BsonDocument("capitulo.CapituloNumero", capituloNumero)
+                    )
+                };
+
+                // Perform the update
+                var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
+                
+                await _libroCollection.UpdateOneAsync(filter, update, updateOptions);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
     }
 }

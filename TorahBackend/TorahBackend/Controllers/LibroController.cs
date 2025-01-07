@@ -48,5 +48,13 @@ namespace TorahBackend.WebApi.Controllers
             await _libroService.ActualizarAbreviatura(payload.Id, payload.Abreviatura);
             return Ok(true);
         }
+
+        [Authorize]
+        [HttpPatch("actualizar/versiculo")]
+        public async Task<IActionResult> ActualizarVersiculo([FromBody] LibroVersiculo payload)
+        {
+            await _libroService.ActualizarVersiculo(payload.Id, payload.CapituloNumero, payload.VersiculoNumero, payload.Versiculo);
+            return Ok(true);
+        }
     }
 }

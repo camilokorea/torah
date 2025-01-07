@@ -100,5 +100,18 @@ namespace TorahBackend.Application.Services
                 throw;
             }
         }
+
+        public async Task ActualizarVersiculo(string id, int capituloNumero, int versiculoNumero, string versiculo)
+        {
+            try
+            {
+                await _dataRepository.UpdateVersiculoLibro(id, capituloNumero, versiculoNumero, versiculo);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
     }
 }

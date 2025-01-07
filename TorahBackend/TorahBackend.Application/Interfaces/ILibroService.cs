@@ -11,5 +11,7 @@ namespace TorahBackend.Application.Interfaces
         Task ActualizarNombre(string id, string nombre);
 
         Task ActualizarAbreviatura(string id, string abreviatura);
+
+        Task ActualizarVersiculo(string id, int capituloNumero, int versiculoNumero, string versiculo);
     }
 }

@@ -19,10 +19,12 @@ const Libro = () => {
     const [libroVersiculoInputValue, setLibroVersiculoInputValue] = useState({
         libroId: '',
         capituloNumero: null,
+        versiculoNumero: null,
         versiculo: ''
     });
 
     const hasFetched = useRef(false);
+
     const {
         libro,
         loading,
@@ -32,7 +34,8 @@ const Libro = () => {
         crudDone,
         fetchLibro,
         actualizarNombre,
-        actualizarAbreviatura
+        actualizarAbreviatura,
+        actualizarVersiculo
     } = UseLibroCrud();
 
     const handleCloseModalLibroTitulo = () => setShowModalLibroTitulo(false);
@@ -43,10 +46,12 @@ const Libro = () => {
 
     const handleCloseModalLibroVersiculo = () => setShowModalLibroVersiculo(false);
     const handleShowModalLibroVersiculo = (libroId, capituloNumero, versiculo, versiculoNumero) => {
-        console.log(libroId);
-        console.log(capituloNumero);
-        console.log(versiculo);
-        console.log(versiculoNumero);
+        setLibroVersiculoInputValue({
+            libroId: libroId,
+            capituloNumero: capituloNumero,
+            versiculoNumero: versiculoNumero,
+            versiculo: versiculo
+        });
 
         setShowModalLibroVersiculo(true);
     };
@@ -61,12 +66,26 @@ const Libro = () => {
         actualizarAbreviatura(libro?.id, libroAbreviaturaInputValue);
     };
 
+    const handleUpdateLibroVersiculo = (e) => {
+        e.preventDefault();
+        actualizarVersiculo(libroVersiculoInputValue.libroId, libroVersiculoInputValue.capituloNumero, libroVersiculoInputValue.versiculoNumero, libroVersiculoInputValue.versiculo);
+    };
+
     const handleChangeLibroTituloInputValue = (e) => {
         setLibroTituloInputValue(e.target.value);
     };
 
     const handleChangeLibroAbreviaturaInputValue = (e) => {
         setLibroAbreviaturaInputValue(e.target.value);
+    };
+
+    const handleChangeLibroVersiculoInputValue = (e) => {
+        setLibroVersiculoInputValue({
+            libroId: libroVersiculoInputValue.libroId,
+            capituloNumero: libroVersiculoInputValue.capituloNumero,
+            versiculoNumero: libroVersiculoInputValue.versiculoNumero,
+            versiculo: e.target.value
+        });
     };
 
     useEffect(() => {
@@ -241,6 +260,46 @@ const Libro = () => {
                         ) : null}
                     </Button>
                     <Button variant="primary" onClick={handleUpdateLibroAbreviatura} disabled={loadingCrud}>
+                        {!loadingCrud ? "Guardar Cambios" : "Cargando"}
+                        {loadingCrud ? (
+                            <Spinner
+                                style={{ width: "0.7rem", height: "0.7rem" }}
+                                type="grow"
+                                color="light"
+                            />
+                        ) : null}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showModalLibroVersiculo} onHide={handleCloseModalLibroVersiculo}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Editar versículo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleUpdateLibroVersiculo}>
+                        <Form.Group className="mb-3" controlId="LibroVersiculoForm">
+                            <Form.Label>Versículo</Form.Label>
+                            <Form.Control
+                                type="text"
+                                autoFocus
+                                value={libroVersiculoInputValue.versiculo || ""}
+                                onChange={handleChangeLibroVersiculoInputValue}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" type="submit" disabled={loadingCrud} onClick={handleCloseModalLibroVersiculo}>
+                        {!loadingCrud ? "Cerrar" : "Cargando"}
+                        {loadingCrud ? (
+                            <Spinner
+                                style={{ width: "0.7rem", height: "0.7rem" }}
+                                type="grow"
+                                color="light"
+                            />
+                        ) : null}
+                    </Button>
+                    <Button variant="primary" onClick={handleUpdateLibroVersiculo} disabled={loadingCrud}>
                         {!loadingCrud ? "Guardar Cambios" : "Cargando"}
                         {loadingCrud ? (
                             <Spinner
