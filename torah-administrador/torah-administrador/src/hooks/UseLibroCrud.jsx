@@ -137,8 +137,8 @@ export const UseLibroCrud = () => {
     }
   };
 
-  // Actualizar abreviatura de libro
-  const actualizarVersiculo = async (id, capituloNumero, versiculoNumero, versiculo) => {
+  // Actualizar versiculo de libro
+  const actualizarVersiculo = async (libroVersiculoInputValue) => {
     setLoadingCrud(true);
     setErrorCrud(null);
     setCrudDone(false);
@@ -151,20 +151,20 @@ export const UseLibroCrud = () => {
         },
         body: JSON.stringify(
           {
-            id: id,
-            capituloNumero: capituloNumero,
-            versiculoNumero: versiculoNumero,
-            versiculo: versiculo
+            id: libroVersiculoInputValue.libroId,
+            capituloNumero: libroVersiculoInputValue.capituloNumero,
+            versiculoNumero: libroVersiculoInputValue.versiculoNumero,
+            versiculo: libroVersiculoInputValue.versiculo
           }),
       });
 
       if (!response.ok) {
         setErrorCrud('Se produjo un error al tratar de actualizar el versículo: ' + response.status + ' ' + codigosHttp[response.status]);
       } else {
-        debugger
         setErrorCrud(null);
         setCrudDone(true);
         setLibro((prev) => {
+          prev.capitulos[prev.capitulos.findIndex(item => item.capituloNumero == libroVersiculoInputValue.capituloNumero)].versiculos[libroVersiculoInputValue.versiculoNumero] = libroVersiculoInputValue.versiculo;
           return prev;
         });
       }

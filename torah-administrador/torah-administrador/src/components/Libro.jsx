@@ -56,19 +56,18 @@ const Libro = () => {
         setShowModalLibroVersiculo(true);
     };
 
-    const handleUpdateLibroTitulo = (e) => {
-        e.preventDefault();
+    const handleUpdateLibroTitulo = () => {
         actualizarNombre(libro?.id, libroTituloInputValue);
     };
 
-    const handleUpdateLibroAbreviatura = (e) => {
-        e.preventDefault();
+    const handleUpdateLibroAbreviatura = () => {
         actualizarAbreviatura(libro?.id, libroAbreviaturaInputValue);
     };
 
-    const handleUpdateLibroVersiculo = (e) => {
-        e.preventDefault();
-        actualizarVersiculo(libroVersiculoInputValue.libroId, libroVersiculoInputValue.capituloNumero, libroVersiculoInputValue.versiculoNumero, libroVersiculoInputValue.versiculo);
+    const handleUpdateLibroVersiculo = () => {
+        // actualizarVersiculo(libro?.id, libroVersiculoInputValue.capituloNumero, libroVersiculoInputValue.versiculoNumero, libroVersiculoInputValue.versiculo);
+        console.log(libroVersiculoInputValue);
+        actualizarVersiculo(libroVersiculoInputValue);
     };
 
     const handleChangeLibroTituloInputValue = (e) => {
@@ -128,6 +127,7 @@ const Libro = () => {
             toast.success("Datos de libro salvado satisfactoriamente", { position: "bottom-right" });
             handleCloseModalLibroTitulo();
             handleCloseModalLibroAbreviatura();
+            handleCloseModalLibroVersiculo();
         }
     }, [crudDone]);
 
@@ -196,7 +196,7 @@ const Libro = () => {
                     <Modal.Title>Editar nombre de Libro bíblico</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleUpdateLibroTitulo}>
+                    <Form>
                         <Form.Group className="mb-3" controlId="LibroNombreForm">
                             <Form.Label>Nombre de Libro</Form.Label>
                             <Form.Control
@@ -236,7 +236,7 @@ const Libro = () => {
                     <Modal.Title>Editar abreviatura de Libro bíblico</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleUpdateLibroAbreviatura}>
+                    <Form>
                         <Form.Group className="mb-3" controlId="LibroAbreviaturaForm">
                             <Form.Label>Abreviatura de Libro</Form.Label>
                             <Form.Control
@@ -276,7 +276,7 @@ const Libro = () => {
                     <Modal.Title>Editar versículo</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleUpdateLibroVersiculo}>
+                    <Form>
                         <Form.Group className="mb-3" controlId="LibroVersiculoForm">
                             <Form.Label>Versículo</Form.Label>
                             <Form.Control
