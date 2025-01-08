@@ -12,6 +12,7 @@ namespace TorahBackend.Infrastructure.Repositories
         private readonly IMongoDatabase? _database;
         private readonly IMongoCollection<Libro>? _libroCollection;
         private readonly IMongoCollection<Usuario>? _usuarioCollection;
+        private readonly IMongoCollection<VersionControlador>? _versionControladorCollection;
         private readonly ITorahJsonRepository _torahJsonRepository;
 
         public DataRepository(string connectionString, ITorahJsonRepository torahJsonRepository)
@@ -22,7 +23,7 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 _torahJsonRepository = torahJsonRepository;
 
-                var mongoUrl = MongoUrl.Create(connectionString);
+                var mongoUrl = MongoUrl.Create(_connectionString);
 
                 var mongoClient = new MongoClient(mongoUrl);
 
@@ -31,6 +32,8 @@ namespace TorahBackend.Infrastructure.Repositories
                 _libroCollection = _database.GetCollection<Libro>("Libro");
 
                 _usuarioCollection = _database.GetCollection<Usuario>("Usuario");
+
+                _versionControladorCollection = _database.GetCollection <VersionControlador>("VersionControlador");
             }
             catch
             {
@@ -54,8 +57,19 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 if (existingUsers.Count < 1) {
                     await _usuarioCollection.InsertOneAsync(new Usuario {
-                        Email="admin@admin.com",
-                        Password= "a5a2b5f65bcd9bde0a3943774e4cc2fc"
+                        Email = "admin@admin.com",
+                        Password = "a5a2b5f65bcd9bde0a3943774e4cc2fc"
+                    });
+                }
+
+                var existingVersionControls = await _versionControladorCollection.Find(_ => true).ToListAsync();
+
+                if (existingVersionControls.Count < 1)
+                {
+                    await _versionControladorCollection.InsertOneAsync(new VersionControlador
+                    {
+                        Version = 0,
+                        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
                     });
                 }
             }
@@ -170,5 +184,50 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
+        public async Task IncremetarVersion() 
+        {
+            try 
+            {
+                var filter = Builders<VersionControlador>.Filter.Empty;
+                var sort = Builders<VersionControlador>.Sort.Descending(doc => doc.Timestamp);
+
+                var result = await _versionControladorCollection
+                    .Find(filter)
+                    .Sort(sort)
+                    .Limit(1)
+                    .FirstOrDefaultAsync();
+
+                await _versionControladorCollection.InsertOneAsync(new VersionControlador
+                {
+                    Version = result.Version++,
+                    Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                });
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task<VersionControlador> ObtenerUltimaVersion()
+        {
+            try
+            {
+                var filter = Builders<VersionControlador>.Filter.Empty;
+                var sort = Builders<VersionControlador>.Sort.Descending(doc => doc.Timestamp);
+
+                var result = await _versionControladorCollection
+                    .Find(filter)
+                    .Sort(sort)
+                    .Limit(1)
+                    .FirstOrDefaultAsync();
+
+                return result;
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

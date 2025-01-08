@@ -11,9 +11,14 @@ namespace TorahBackend.Application.Services
     public class LibroService: ILibroService
     {
         private readonly IDataRepository _dataRepository;
-        public LibroService(IDataRepository dataRepository) {
+
+        private readonly IVersionControladorService _versionControladorService;
+
+        public LibroService(IDataRepository dataRepository, IVersionControladorService versionControladorService) {
             _dataRepository = dataRepository;
+            _versionControladorService = versionControladorService;
         }
+
         public async Task<List<LibroInfo>> List()
         {
             try { 
@@ -82,6 +87,7 @@ namespace TorahBackend.Application.Services
             try
             {
                 await _dataRepository.UpdateNombreLibro(id, nombre);
+                await _versionControladorService.IncrementarVersion();
             }
             catch
             {
@@ -94,6 +100,7 @@ namespace TorahBackend.Application.Services
             try
             {
                 await _dataRepository.UpdateAbreviaturaLibro(id, abreviatura);
+                await _versionControladorService.IncrementarVersion();
             }
             catch
             {
@@ -106,12 +113,12 @@ namespace TorahBackend.Application.Services
             try
             {
                 await _dataRepository.UpdateVersiculoLibro(id, capituloNumero, versiculoNumero, versiculo);
+                await _versionControladorService.IncrementarVersion();
             }
             catch
             {
                 throw;
             }
         }
-
     }
 }

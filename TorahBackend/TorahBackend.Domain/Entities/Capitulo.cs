@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace TorahBackend.Domain.Entities
 {

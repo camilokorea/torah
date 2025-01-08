@@ -65,8 +65,6 @@ const Libro = () => {
     };
 
     const handleUpdateLibroVersiculo = () => {
-        // actualizarVersiculo(libro?.id, libroVersiculoInputValue.capituloNumero, libroVersiculoInputValue.versiculoNumero, libroVersiculoInputValue.versiculo);
-        console.log(libroVersiculoInputValue);
         actualizarVersiculo(libroVersiculoInputValue);
     };
 

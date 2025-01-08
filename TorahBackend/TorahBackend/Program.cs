@@ -19,15 +19,19 @@ var dataRepository = new DataRepository(connectionString, torahJsonRepository);
 
 var usuarioService = new UsuarioService(dataRepository, jwtConfig);
 
-var libroService = new LibroService(dataRepository);
+var versionControladorService = new VersionControladorService(dataRepository);
 
-builder.Services.AddScoped<IDataRepository>(provider => dataRepository);
+var libroService = new LibroService(dataRepository, versionControladorService);
 
-builder.Services.AddScoped<IUsuarioService>(provider => usuarioService);
+builder.Services.AddSingleton<IDataRepository>(provider => dataRepository);
 
-builder.Services.AddScoped<ILibroService>(provider => libroService);
+builder.Services.AddSingleton<IUsuarioService>(provider => usuarioService);
 
-builder.Services.AddScoped<ITorahJsonRepository>(provider => torahJsonRepository);
+builder.Services.AddSingleton<ILibroService>(provider => libroService);
+
+builder.Services.AddSingleton<IVersionControladorService>(provider => versionControladorService);
+
+builder.Services.AddSingleton<ITorahJsonRepository>(provider => torahJsonRepository);
 
 // data seed initial torah data
 await dataRepository.DataSeed();
@@ -68,20 +72,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-/*
-var tokenValidationParameters = new TokenValidationParameters()
-{
-    ValidateIssuerSigningKey = true,
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Secret)),
-    ValidateIssuer = false,
-    ValidateAudience = false,
-    RequireExpirationTime = false,
-    ValidateLifetime = true
-};
-
-builder.Services.AddSingleton(tokenValidationParameters);
-*/
 
 //services cors
 builder.Services.AddCors(options =>
