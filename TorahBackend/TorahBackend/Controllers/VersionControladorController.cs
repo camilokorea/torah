@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TorahBackend.Application.DTO;
 using TorahBackend.Application.Interfaces;
+using TorahBackend.Application.Services;
 
 namespace TorahBackend.WebApi.Controllers
 {
@@ -13,6 +14,13 @@ namespace TorahBackend.WebApi.Controllers
         public VersionControladorController(IVersionControladorService versionControladorService)
         {
             _versionControladorService = versionControladorService;
+        }
+
+        [HttpGet("ultimaversion")]
+        public async Task<IActionResult> ObtenerUltimaVersion()
+        {
+            var ultimaVersion = await _versionControladorService.ObtenerUltimaVersion();
+            return Ok(ultimaVersion);
         }
     }
 }

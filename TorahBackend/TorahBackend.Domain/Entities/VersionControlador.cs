@@ -15,7 +15,5 @@ namespace TorahBackend.Domain.Entities
 
         [JsonPropertyName("timestamp")]
         public long Timestamp { get; set; }
-
-
     }
 }
