@@ -13,6 +13,6 @@ namespace TorahBackend.Application.Interfaces
         Task UpdateAbreviaturaLibro(string id, string abreviatura);
         Task UpdateVersiculoLibro(string id, int capituloNumero, int versiculoNumero, string versiculo);
         Task IncremetarVersion();
-        Task ObtenerUltimaVersion();
+        Task<VersionControlador> ObtenerUltimaVersion();
     }
 }

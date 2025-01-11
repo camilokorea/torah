@@ -6,7 +6,7 @@ using System.Reflection.Metadata;
 
 namespace TorahBackend.Infrastructure.Repositories
 {
-    public class DataRepository: IDataRepository
+    public class DataRepository : IDataRepository
     {
         private readonly string _connectionString;
         private readonly IMongoDatabase? _database;
@@ -33,7 +33,7 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 _usuarioCollection = _database.GetCollection<Usuario>("Usuario");
 
-                _versionControladorCollection = _database.GetCollection <VersionControlador>("VersionControlador");
+                _versionControladorCollection = _database.GetCollection<VersionControlador>("VersionControlador");
             }
             catch
             {
@@ -41,12 +41,13 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task DataSeed() 
+        public async Task DataSeed()
         {
-            try {
+            try
+            {
                 var existingLibros = await _libroCollection.Find(_ => true).ToListAsync();
 
-                if (existingLibros.Count < 1) 
+                if (existingLibros.Count < 1)
                 {
                     var libros = await _torahJsonRepository.LoadData();
 
@@ -55,8 +56,10 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 var existingUsers = await _usuarioCollection.Find(_ => true).ToListAsync();
 
-                if (existingUsers.Count < 1) {
-                    await _usuarioCollection.InsertOneAsync(new Usuario {
+                if (existingUsers.Count < 1)
+                {
+                    await _usuarioCollection.InsertOneAsync(new Usuario
+                    {
                         Email = "admin@admin.com",
                         Password = "a5a2b5f65bcd9bde0a3943774e4cc2fc"
                     });
@@ -73,18 +76,22 @@ namespace TorahBackend.Infrastructure.Repositories
                     });
                 }
             }
-            catch {
+            catch
+            {
                 throw;
             }
         }
 
-        public async Task<Usuario> GetUsuario(string email) {
-            try {
+        public async Task<Usuario> GetUsuario(string email)
+        {
+            try
+            {
                 var usuario = await _usuarioCollection.FindAsync(x => x.Email == email).Result.SingleOrDefaultAsync();
                 return usuario;
             }
-            catch { 
-                throw;  
+            catch
+            {
+                throw;
             }
         }
 
@@ -114,7 +121,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateNombreLibro(string id, string nombre) 
+        public async Task UpdateNombreLibro(string id, string nombre)
         {
             try
             {
@@ -123,8 +130,8 @@ namespace TorahBackend.Infrastructure.Repositories
                 var update = Builders<Libro>.Update.Set(x => x.Nombre, nombre);
 
                 await _libroCollection.UpdateOneAsync(filter, update);
-            } 
-            catch 
+            }
+            catch
             {
                 throw;
             }
@@ -175,7 +182,7 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 // Perform the update
                 var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
-                
+
                 await _libroCollection.UpdateOneAsync(filter, update, updateOptions);
             }
             catch
@@ -184,9 +191,9 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task IncremetarVersion() 
+        public async Task IncremetarVersion()
         {
-            try 
+            try
             {
                 var filter = Builders<VersionControlador>.Filter.Empty;
                 var sort = Builders<VersionControlador>.Sort.Descending(doc => doc.Timestamp);
@@ -197,13 +204,15 @@ namespace TorahBackend.Infrastructure.Repositories
                     .Limit(1)
                     .FirstOrDefaultAsync();
 
+                var nextVersion = result.Version + 1;
+
                 await _versionControladorCollection.InsertOneAsync(new VersionControlador
                 {
-                    Version = result.Version++,
+                    Version = nextVersion,
                     Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
                 });
             }
-            catch 
+            catch
             {
                 throw;
             }
