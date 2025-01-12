@@ -17,33 +17,35 @@ const db = {
 };
 
 export const useDb = () => {
-    const [torah, setTorah] = useState(null);
+    const [torah, setTorah] = useState([]);
     const [version, setVersion] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [loadingDb, setLoadingDb] = useState(false);
+    const [errorDb, setErrorDb] = useState(null);
+    const [dataBaseInitialized, setDataBaseInitialized] = useState(false);
 
     const initIndexedDb = async () => {
-        setError(null);
-        setLoading(true);
+        setErrorDb(null);
+        setLoadingDb(true);
 
         try {
+            setLoadingDb(false);
+            setDataBaseInitialized(true);
+
             return openDB(db.DB_NAME, 1, {
-                upgrade(db) {
-                    if (!db.objectStoreNames.contains(db.stores.torah.name)) {
-                        db.createObjectStore(db.stores.torah.name, { keyPath: 'id' });
+                upgrade(dbObject) {
+                    if (!dbObject.objectStoreNames.contains(db.stores.torah.name)) {
+                        dbObject.createObjectStore(db.stores.torah.name, { keyPath: 'id' });
                     }
 
-                    if (!db.objectStoreNames.contains(db.stores.version.name)) {
-                        db.createObjectStore(db.stores.version.name, { keyPath: 'id' });
+                    if (!dbObject.objectStoreNames.contains(db.stores.version.name)) {
+                        dbObject.createObjectStore(db.stores.version.name, { keyPath: 'id' });
                     }
-
-                    setLoading(false);
                 },
             });
         }
         catch (e) {
-            setError(e.message);
-            setLoading(false);
+            setErrorDb(e.message);
+            setLoadingDb(false);
             return null;
         }
     };
@@ -55,42 +57,44 @@ export const useDb = () => {
     };
 
     const queryTorah = async () => {
-        setError(null);
-        setLoading(true);
+        setErrorDb(null);
+        setLoadingDb(true);
 
         try {
             await initDB();
             const tx = db.dbInstance.transaction(db.stores.torah.name, 'readonly');
             const store = tx.objectStore(db.stores.torah.name);
-            setTorah(store.getAll());
-            setLoading(false);
+            let response = await store.getAll();
+            setTorah(response);
+            setLoadingDb(false);
         }
         catch (e) {
-            setError(e.message);
-            setLoading(false);
+            setErrorDb(e.message);
+            setLoadingDb(false);
         }
     };
 
     const queryVersion = async () => {
-        setError(null);
-        setLoading(true);
+        setErrorDb(null);
+        setLoadingDb(true);
 
         try {
             await initDB();
             const tx = db.dbInstance.transaction(db.stores.version.name, 'readonly');
             const store = tx.objectStore(db.stores.version.name);
-            setVersion(store.getAll());
-            setLoading(false);
+            const dbResult = await store.getAll();
+            setVersion(dbResult ? dbResult[0] : null);
+            setLoadingDb(false);
         }
         catch (e) {
-            setError(e.message);
-            setLoading(false);
+            setErrorDb(e.message);
+            setLoadingDb(false);
         }
     };
 
     const insertLibro = async (libro) => {
-        setError(null);
-        setLoading(true);
+        setErrorDb(null);
+        setLoadingDb(true);
 
         try {
             await initDB();
@@ -100,18 +104,37 @@ export const useDb = () => {
             await tx.done;
         }
         catch (e) {
-            setError(e.message);
-            setLoading(false);
+            setErrorDb(e.message);
+            setLoadingDb(false);
+        }
+    };
+
+    const insertUltimaVersion = async (ultimaVersion) => {
+        setErrorDb(null);
+        setLoadingDb(true);
+
+        try {
+            await initDB();
+            const tx = db.dbInstance.transaction(db.stores.version.name, 'readwrite');
+            const store = tx.objectStore(db.stores.version.name);
+            store.put(ultimaVersion);
+            await tx.done;
+        }
+        catch (e) {
+            setErrorDb(e.message);
+            setLoadingDb(false);
         }
     };
 
     return {
         torah,
         version,
-        loading,
-        error,
+        loadingDb,
+        errorDb,
+        dataBaseInitialized,
         queryTorah,
         queryVersion,
-        insertLibro
+        insertLibro,
+        insertUltimaVersion
     };
 };

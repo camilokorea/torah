@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { useHttpCodes } from './useHttpCodes';
 
-// URL base del API
 const API_URL = 'https://localhost:7116/api/VersionControlador/';
 
-// Custom Hook
 export const useApiVersion = () => {
     const {
         codigosHttp
     } = useHttpCodes();
 
-    const [version, setVersion] = useState(null);
+    const [lastVersion, setLastVersion] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -24,7 +22,7 @@ export const useApiVersion = () => {
                 setError('Error obteniendo ultima version: ' + response.status + ' ' + codigosHttp[response.status]);
             } else {
                 const data = await response.json();
-                setVersion(data);
+                setLastVersion(data);
             }
         } catch (err) {
             setError(err.message);
@@ -34,7 +32,7 @@ export const useApiVersion = () => {
     };
 
     return {
-        version,
+        lastVersion,
         loading,
         error,
         fetchUltimaVersion
