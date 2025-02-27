@@ -17,9 +17,13 @@ const db = {
 };
 
 export const useDb = () => {
-    const [torah, setTorah] = useState([]);
+    const [torah, setTorah] = useState(null);
     const [version, setVersion] = useState(null);
     const [loadingDb, setLoadingDb] = useState(false);
+    const [loadingDbLibros, setLoadingDbLibros] = useState(false);
+    const [loadingDbVersion, setLoadingDbVersion] = useState(false);
+    const [loadingDbInsertVersion, setLoadingDbInsertVersion] = useState(false);
+    const [loadingDbInsertarLibro, setLoadingDbInsertarLibro] = useState(false);
     const [errorDb, setErrorDb] = useState(null);
     const [dataBaseInitialized, setDataBaseInitialized] = useState(false);
 
@@ -58,7 +62,7 @@ export const useDb = () => {
 
     const queryTorah = async () => {
         setErrorDb(null);
-        setLoadingDb(true);
+        setLoadingDbLibros(true);
 
         try {
             await initDB();
@@ -66,17 +70,17 @@ export const useDb = () => {
             const store = tx.objectStore(db.stores.torah.name);
             let response = await store.getAll();
             setTorah(response);
-            setLoadingDb(false);
+            setLoadingDbLibros(false);
         }
         catch (e) {
             setErrorDb(e.message);
-            setLoadingDb(false);
+            setLoadingDbLibros(false);
         }
     };
 
     const queryVersion = async () => {
         setErrorDb(null);
-        setLoadingDb(true);
+        setLoadingDbVersion(true);
 
         try {
             await initDB();
@@ -84,17 +88,17 @@ export const useDb = () => {
             const store = tx.objectStore(db.stores.version.name);
             const dbResult = await store.getAll();
             setVersion(dbResult ? dbResult[0] : null);
-            setLoadingDb(false);
+            setLoadingDbVersion(false);
         }
         catch (e) {
             setErrorDb(e.message);
-            setLoadingDb(false);
+            setLoadingDbVersion(false);
         }
     };
 
     const insertLibro = async (libro) => {
         setErrorDb(null);
-        setLoadingDb(true);
+        setLoadingDbInsertarLibro(true);
 
         try {
             await initDB();
@@ -102,16 +106,17 @@ export const useDb = () => {
             const store = tx.objectStore(db.stores.torah.name);
             store.put(libro);
             await tx.done;
+            setLoadingDbInsertarLibro(false);
         }
         catch (e) {
             setErrorDb(e.message);
-            setLoadingDb(false);
+            setLoadingDbInsertarLibro(false);
         }
     };
 
     const insertUltimaVersion = async (ultimaVersion) => {
         setErrorDb(null);
-        setLoadingDb(true);
+        setLoadingDbInsertVersion(true);
 
         try {
             await initDB();
@@ -119,17 +124,23 @@ export const useDb = () => {
             const store = tx.objectStore(db.stores.version.name);
             store.put(ultimaVersion);
             await tx.done;
+            setLoadingDbInsertVersion(false);
         }
         catch (e) {
             setErrorDb(e.message);
-            setLoadingDb(false);
+            setLoadingDbInsertVersion(false);
         }
     };
 
     return {
         torah,
+        setTorah,
         version,
         loadingDb,
+        loadingDbLibros,
+        loadingDbVersion,
+        loadingDbInsertVersion,
+        loadingDbInsertarLibro,
         errorDb,
         dataBaseInitialized,
         queryTorah,

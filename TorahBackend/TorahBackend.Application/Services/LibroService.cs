@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TorahBackend.Application.DTO;
 using TorahBackend.Application.Interfaces;
+using TorahBackend.Domain.Entities;
 
 namespace TorahBackend.Application.Services
 {
@@ -75,6 +76,44 @@ namespace TorahBackend.Application.Services
                 }
 
                 return libro;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<LibroDetalle>> GetTorah()
+        {
+            try
+            {
+                var libroRecords = await _dataRepository.ListLibros();
+
+                List<LibroDetalle> libros = new List<LibroDetalle>();
+
+                if (libroRecords != null)
+                {
+                    foreach (var libroRecord in libroRecords)
+                    {
+                        libros.Add(new LibroDetalle
+                        {
+                            Id = libroRecord.Id,
+                            Nombre = libroRecord.Nombre,
+                            Abreviacion = libroRecord.Abreviacion,
+                        });
+
+                        foreach (var item in libroRecord.Capitulos)
+                        {
+                            libros[libros.Count - 1].Capitulos.Add(new CapituloDetalle
+                            {
+                                CapituloNumero = item.CapituloNumero,
+                                Versiculos = item.Versiculos
+                            });
+                        }
+                    }
+                }
+
+                return libros;
             }
             catch
             {

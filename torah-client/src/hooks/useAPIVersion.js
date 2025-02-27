@@ -9,32 +9,32 @@ export const useApiVersion = () => {
     } = useHttpCodes();
 
     const [lastVersion, setLastVersion] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [loadingVersion, setLoadingVersion] = useState(false);
+    const [errorVersion, setErrorVersion] = useState(null);
 
     const fetchUltimaVersion = async () => {
-        setLoading(true);
-        setError(null);
+        setLoadingVersion(true);
+        setErrorVersion(null);
         try {
             const response = await fetch(API_URL + 'ultimaversion');
 
             if (!response.ok) {
-                setError('Error obteniendo ultima version: ' + response.status + ' ' + codigosHttp[response.status]);
+                setErrorVersion('Error obteniendo ultima version: ' + response.status + ' ' + codigosHttp[response.status]);
             } else {
                 const data = await response.json();
                 setLastVersion(data);
             }
         } catch (err) {
-            setError(err.message);
+            setErrorVersion(err.message);
         } finally {
-            setLoading(false);
+            setLoadingVersion(false);
         }
     };
 
     return {
         lastVersion,
-        loading,
-        error,
+        loadingVersion,
+        errorVersion,
         fetchUltimaVersion
     };
 };

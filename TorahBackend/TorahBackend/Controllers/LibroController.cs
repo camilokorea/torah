@@ -33,6 +33,13 @@ namespace TorahBackend.WebApi.Controllers
             return Ok(libro);
         }
 
+        [HttpGet("get/torah")]
+        public async Task<IActionResult> Totah()
+        {
+            var libros = await _libroService.GetTorah();
+            return Ok(libros);
+        }
+
         [Authorize]
         [HttpPatch("actualizar/nombre")]
         public async Task<IActionResult> ActualizarNombre([FromBody] LibroNombre payload)

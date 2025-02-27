@@ -13,6 +13,10 @@ function App() {
     torah,
     version,
     loadingDb,
+    loadingDbLibros,
+    loadingDbVersion,
+    loadingDbInsertVersion,
+    loadingDbInsertarLibro,
     errorDb,
     dataBaseInitialized,
     queryTorah,
@@ -23,55 +27,60 @@ function App() {
 
   const {
     lastVersion,
-    loading,
-    error,
+    loadingVersion,
+    errorVersion,
     fetchUltimaVersion
   } = useApiVersion();
 
-  async function actualizarTorah() {
-  }
+  const {
+    loadingLibros,
+    errorLibros,
+    libros,
+    fetchLibros
+  } = useApiLibro();
 
-  async function fetchDataAndStore() {
-  }
+  useEffect(() => {
+    async function initialLoad() {
+      await queryTorah();
+      await queryVersion();
+    }
 
-  async function getStoredData() {
-    await queryTorah();
-    await queryVersion();
-  }
+    initialLoad();
+  }, []);
 
-  useMemo(() => {
-    setData(torah);
-  }, [torah]);
-
-  useMemo(() => {
-    if (dataBaseInitialized) {
-      if (!version) {
-        fetchUltimaVersion();
+  useEffect(() => {
+    if (torah) {
+      if (torah.length > 0) {
+        setData(torah);
+      } else {
+        fetchLibros();
       }
     }
-  }, [version, dataBaseInitialized]);
+  }, [torah]);
 
-  useMemo(() => {
-    if (dataBaseInitialized) {
-      if (!version) {
-        insertUltimaVersion(lastVersion);
-      }
+  useEffect(() => {
+    console.log(version);
+    if (version === undefined) {
+      fetchUltimaVersion();
+    }
+  }, [version]);
+
+  useMemo(async () => {
+    if (lastVersion !== null) {
+      insertUltimaVersion(lastVersion);
     }
   }, [lastVersion]);
 
-  useMemo(() => {
-    //console.log(loadingDb);
-  }, [loadingDb]);
+  useMemo(async () => {
+    data.forEach(item => {
+      insertLibro(item);
+    });
+  }, [data]);
 
   useEffect(() => {
     const updateOnlineStatus = () => setIsOnline(navigator.onLine);
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
-
-    (async () => {
-      // if (isOnline) await fetchDataAndStore();
-      await getStoredData();
-    })();
 
     return () => {
       window.removeEventListener('online', updateOnlineStatus);
@@ -87,7 +96,7 @@ function App() {
       </header>
       <main>
         {
-          data ?
+          data.length > 0 ?
             (
               <ul>
                 {data.map(item => (<li key={item.id}>{item.nombre}</li>))}
