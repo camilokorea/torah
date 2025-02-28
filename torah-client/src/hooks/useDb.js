@@ -18,7 +18,7 @@ const db = {
 
 export const useDb = () => {
     const [torah, setTorah] = useState(null);
-    const [version, setVersion] = useState(null);
+    const [version, setVersion] = useState(false);
     const [loadingDb, setLoadingDb] = useState(false);
     const [loadingDbLibros, setLoadingDbLibros] = useState(false);
     const [loadingDbVersion, setLoadingDbVersion] = useState(false);
@@ -87,7 +87,7 @@ export const useDb = () => {
             const tx = db.dbInstance.transaction(db.stores.version.name, 'readonly');
             const store = tx.objectStore(db.stores.version.name);
             const dbResult = await store.getAll();
-            setVersion(dbResult ? dbResult[0] : null);
+            setVersion(dbResult ? Object.values(dbResult)[Object.values(dbResult).length - 1] : null);
             setLoadingDbVersion(false);
         }
         catch (e) {
@@ -136,6 +136,7 @@ export const useDb = () => {
         torah,
         setTorah,
         version,
+        setVersion,
         loadingDb,
         loadingDbLibros,
         loadingDbVersion,

@@ -61,7 +61,7 @@ namespace TorahBackend.Infrastructure.Repositories
                     await _usuarioCollection.InsertOneAsync(new Usuario
                     {
                         Email = "admin@admin.com",
-                        Password = "d4f814aae25eb08451b0b52085e41480"
+                        Password = "37ca4e3aba50e2b15cd237dc58aca51f"
                     });
                 }
 

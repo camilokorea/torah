@@ -12,6 +12,7 @@ function App() {
   const {
     torah,
     version,
+    setVersion,
     loadingDb,
     loadingDbLibros,
     loadingDbVersion,
@@ -39,10 +40,20 @@ function App() {
     fetchLibros
   } = useApiLibro();
 
+  const updateOnlineStatus = async () => {
+    setIsOnline(navigator.onLine);
+
+    if (navigator.onLine) {
+      await queryVersion();
+    }
+  };
+
   useEffect(() => {
     async function initialLoad() {
-      await queryTorah();
       await queryVersion();
+      await queryTorah();
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
     }
 
     initialLoad();
@@ -59,40 +70,41 @@ function App() {
   }, [torah]);
 
   useEffect(() => {
-    console.log(version);
-    if (version === undefined) {
+    if(version !== false) {
       fetchUltimaVersion();
-    }
+    }    
   }, [version]);
 
   useMemo(async () => {
     if (lastVersion !== null) {
-      insertUltimaVersion(lastVersion);
+      if (version === undefined) {
+        await insertUltimaVersion(lastVersion);
+        setVersion(lastVersion);
+      }
+      if (version) {
+        if (version.version < lastVersion.version) {
+          await insertUltimaVersion(lastVersion);
+          setVersion(lastVersion);
+          await fetchLibros();
+        }
+      }
     }
   }, [lastVersion]);
 
   useMemo(async () => {
-    data.forEach(item => {
+    libros.forEach(item => {
       insertLibro(item);
     });
-  }, [data]);
 
-  useEffect(() => {
-    const updateOnlineStatus = () => setIsOnline(navigator.onLine);
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-
-    return () => {
-      window.removeEventListener('online', updateOnlineStatus);
-      window.removeEventListener('offline', updateOnlineStatus);
-    };
-  }, [isOnline]);
+    await queryTorah();
+  }, [libros]);
 
   return (
     <div className="app">
       <header className="app-header">
         <h1>Torah Client</h1>
         <p>Status: {isOnline ? 'Online' : 'Offline'}</p>
+        <p>Version: {version?.version}</p>
       </header>
       <main>
         {
