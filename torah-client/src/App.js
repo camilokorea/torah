@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDb } from './hooks/useDb';
 import { useApiLibro } from './hooks/useAPILibro';
 import { useApiVersion } from './hooks/useAPIVersion';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
   const [data, setData] = useState([]);
@@ -19,7 +20,6 @@ function App() {
     loadingDbInsertVersion,
     loadingDbInsertarLibro,
     errorDb,
-    dataBaseInitialized,
     queryTorah,
     queryVersion,
     insertLibro,
@@ -64,15 +64,79 @@ function App() {
       if (torah.length > 0) {
         setData(torah);
       } else {
-        fetchLibros();
+        if (isOnline === true) {
+          fetchLibros();
+        }
       }
     }
   }, [torah]);
 
   useEffect(() => {
-    if(version !== false) {
-      fetchUltimaVersion();
-    }    
+    if (loadingDbVersion) {
+      toast.info("Cargando datos de version instalada en dispositivo", { position: "bottom-right" });
+    }
+  }, [loadingDbVersion]);
+
+  useEffect(() => {
+    if (loadingLibros) {
+      toast.info("Cargando datos de version en el servidor", { position: "bottom-right" });
+    }
+  }, [loadingLibros]);
+
+  useEffect(() => {
+    if (loadingDbLibros) {
+      toast.info("Cargando de la Torah instalada en dispositivo", { position: "bottom-right" });
+    }
+  }, [loadingDbLibros]);
+
+  useEffect(() => {
+    if (loadingDb) {
+      toast.info("Inicializando base de datos en dispositivo", { position: "bottom-right" });
+    }
+  }, [loadingDb]);
+
+  useEffect(() => {
+    if (loadingVersion) {
+      toast.info("Inicializando base de datos en dispositivo", { position: "bottom-right" });
+    }
+  }, [loadingVersion]);
+
+  useEffect(() => {
+    if (errorLibros) {
+      toast.error("Hubo un problema cargando los datos de la Torah del servidor", { position: "bottom-right" });
+    }
+  }, [errorLibros]);
+
+  useEffect(() => {
+    if (errorVersion) {
+      toast.error("Hubo un problema cargando datos de la ultima version en el servidor", { position: "bottom-right" });
+    }
+  }, [errorVersion]);
+
+  useEffect(() => {
+    if (loadingDbInsertVersion) {
+      toast.info("Salvando datos de version en dispositivo", { position: "bottom-right" });
+    }
+  }, [loadingDbInsertVersion]);
+
+  useEffect(() => {
+    if (loadingDbInsertarLibro) {
+      toast.info("Salvando datos de Torah descargados en dispositivo", { position: "bottom-right" });
+    }
+  }, [loadingDbInsertarLibro]);
+
+  useEffect(() => {
+    if (errorDb) {
+      toast.error("Error de aplicacion: " + errorDb, { position: "bottom-right" });
+    }
+  }, [errorDb]);
+
+  useEffect(() => {
+    if (version !== false) {
+      if (isOnline === true) {
+        fetchUltimaVersion();
+      }
+    }
   }, [version]);
 
   useMemo(async () => {
@@ -85,7 +149,9 @@ function App() {
         if (version.version < lastVersion.version) {
           await insertUltimaVersion(lastVersion);
           setVersion(lastVersion);
-          await fetchLibros();
+          if (isOnline === true) {
+            await fetchLibros();
+          }
         }
       }
     }
@@ -101,6 +167,7 @@ function App() {
 
   return (
     <div className="app">
+      <ToastContainer />
       <header className="app-header">
         <h1>Torah Client</h1>
         <p>Status: {isOnline ? 'Online' : 'Offline'}</p>

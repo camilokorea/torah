@@ -25,7 +25,6 @@ export const useDb = () => {
     const [loadingDbInsertVersion, setLoadingDbInsertVersion] = useState(false);
     const [loadingDbInsertarLibro, setLoadingDbInsertarLibro] = useState(false);
     const [errorDb, setErrorDb] = useState(null);
-    const [dataBaseInitialized, setDataBaseInitialized] = useState(false);
 
     const initIndexedDb = async () => {
         setErrorDb(null);
@@ -33,7 +32,6 @@ export const useDb = () => {
 
         try {
             setLoadingDb(false);
-            setDataBaseInitialized(true);
 
             return openDB(db.DB_NAME, 1, {
                 upgrade(dbObject) {
@@ -143,7 +141,6 @@ export const useDb = () => {
         loadingDbInsertVersion,
         loadingDbInsertarLibro,
         errorDb,
-        dataBaseInitialized,
         queryTorah,
         queryVersion,
         insertLibro,

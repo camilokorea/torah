@@ -8,12 +8,12 @@ namespace TorahBackend.Domain.Entities
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [JsonPropertyName("password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
     }
 }

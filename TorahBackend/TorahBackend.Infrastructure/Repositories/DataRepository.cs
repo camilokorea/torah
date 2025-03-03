@@ -51,29 +51,35 @@ namespace TorahBackend.Infrastructure.Repositories
                 {
                     var libros = await _torahJsonRepository.LoadData();
 
-                    await _libroCollection.InsertManyAsync(libros);
+                    if (_libroCollection != null) {
+                        await _libroCollection.InsertManyAsync(libros);
+                    }                    
                 }
 
                 var existingUsers = await _usuarioCollection.Find(_ => true).ToListAsync();
 
                 if (existingUsers.Count < 1)
                 {
-                    await _usuarioCollection.InsertOneAsync(new Usuario
-                    {
-                        Email = "admin@admin.com",
-                        Password = "37ca4e3aba50e2b15cd237dc58aca51f"
-                    });
+                    if (_usuarioCollection != null) {
+                        await _usuarioCollection.InsertOneAsync(new Usuario
+                        {
+                            Email = "admin@admin.com",
+                            Password = "37ca4e3aba50e2b15cd237dc58aca51f"
+                        });
+                    }
                 }
 
                 var existingVersionControls = await _versionControladorCollection.Find(_ => true).ToListAsync();
 
                 if (existingVersionControls.Count < 1)
                 {
-                    await _versionControladorCollection.InsertOneAsync(new VersionControlador
-                    {
-                        Version = 0,
-                        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-                    });
+                    if (_versionControladorCollection != null) {
+                        await _versionControladorCollection.InsertOneAsync(new VersionControlador
+                        {
+                            Version = 0,
+                            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                        });
+                    }
                 }
             }
             catch

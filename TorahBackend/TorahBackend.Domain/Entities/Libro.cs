@@ -9,13 +9,16 @@ namespace TorahBackend.Domain.Entities
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonPropertyName("nombre")]
-        public string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
         [JsonPropertyName("abreviacion")]
-        public string Abreviacion { get; set; }
+        public string? Abreviacion { get; set; }
+
+        [JsonPropertyName("testamento")]
+        public string? Testamento { get; set; }
 
         [JsonPropertyName("capitulos")]
         public List<Capitulo> Capitulos { get; set; } = new List<Capitulo>();
