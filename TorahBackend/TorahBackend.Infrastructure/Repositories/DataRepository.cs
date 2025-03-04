@@ -13,6 +13,8 @@ namespace TorahBackend.Infrastructure.Repositories
         private readonly IMongoCollection<Libro>? _libroCollection;
         private readonly IMongoCollection<Usuario>? _usuarioCollection;
         private readonly IMongoCollection<VersionControlador>? _versionControladorCollection;
+        private readonly IMongoCollection<Dedicatoria>? _dedicatoriaCollection;
+        private readonly IMongoCollection<Glosario>? _glosarioCollection;
         private readonly ITorahJsonRepository _torahJsonRepository;
 
         public DataRepository(string connectionString, ITorahJsonRepository torahJsonRepository)
@@ -34,6 +36,10 @@ namespace TorahBackend.Infrastructure.Repositories
                 _usuarioCollection = _database.GetCollection<Usuario>("Usuario");
 
                 _versionControladorCollection = _database.GetCollection<VersionControlador>("VersionControlador");
+
+                _dedicatoriaCollection = _database.GetCollection<Dedicatoria>("Dedicatoria");
+
+                _glosarioCollection = _database.GetCollection<Glosario>("Glosario");
             }
             catch
             {
@@ -81,6 +87,31 @@ namespace TorahBackend.Infrastructure.Repositories
                         });
                     }
                 }
+
+                var existingDedicatorias = await _dedicatoriaCollection.Find(_ => true).ToListAsync();
+
+                if (existingDedicatorias.Count < 1)
+                {
+                    if (_dedicatoriaCollection != null)
+                    {
+                        await _dedicatoriaCollection.InsertOneAsync(new Dedicatoria { 
+                            Contenido = "<h1>Dedicatoria</h1>"
+                        });
+                    }
+                }
+
+                var existingGlosarios = await _glosarioCollection.Find(_ => true).ToListAsync();
+
+                if (existingGlosarios.Count < 1)
+                {
+                    if (_glosarioCollection != null)
+                    {
+                        await _glosarioCollection.InsertOneAsync(new Glosario
+                        {
+                            Contenido = "<h1>Glosario</h1>"
+                        });
+                    }
+                }
             }
             catch
             {
@@ -88,7 +119,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task<Usuario> GetUsuario(string email)
+        public async Task<Usuario> GetUsuario(string? email)
         {
             try
             {
@@ -114,7 +145,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task<Libro> ListLibro(string id)
+        public async Task<Libro> ListLibro(string? id)
         {
             try
             {
@@ -127,7 +158,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateNombreLibro(string id, string nombre)
+        public async Task UpdateNombreLibro(string? id, string? nombre)
         {
             try
             {
@@ -135,7 +166,10 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 var update = Builders<Libro>.Update.Set(x => x.Nombre, nombre);
 
-                await _libroCollection.UpdateOneAsync(filter, update);
+                if (_libroCollection != null) 
+                {
+                    await _libroCollection.UpdateOneAsync(filter, update);
+                }
             }
             catch
             {
@@ -143,7 +177,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateAbreviaturaLibro(string id, string abreviatura)
+        public async Task UpdateAbreviaturaLibro(string? id, string? abreviatura)
         {
             try
             {
@@ -151,7 +185,10 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 var update = Builders<Libro>.Update.Set(x => x.Abreviacion, abreviatura);
 
-                await _libroCollection.UpdateOneAsync(filter, update);
+                if (_libroCollection != null) 
+                {
+                    await _libroCollection.UpdateOneAsync(filter, update);
+                }                
             }
             catch
             {
@@ -159,7 +196,7 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateVersiculoLibro(string id, int capituloNumero, int versiculoNumero, string versiculo)
+        public async Task UpdateVersiculoLibro(string? id, int capituloNumero, int versiculoNumero, string? versiculo)
         {
             try
             {
@@ -189,7 +226,10 @@ namespace TorahBackend.Infrastructure.Repositories
                 // Perform the update
                 var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
 
-                await _libroCollection.UpdateOneAsync(filter, update, updateOptions);
+                if (_libroCollection != null) 
+                {
+                    await _libroCollection.UpdateOneAsync(filter, update, updateOptions);
+                }
             }
             catch
             {
@@ -238,6 +278,70 @@ namespace TorahBackend.Infrastructure.Repositories
                     .FirstOrDefaultAsync();
 
                 return result;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Glosario>> ListGlosario() 
+        {
+            try 
+            {
+                var glosarios = await _glosarioCollection.FindAsync(_ => true);
+                return glosarios.ToList();
+            }
+            catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Dedicatoria>> ListDedicatoria() 
+        {
+            try
+            {
+                var dedicatorias = await _dedicatoriaCollection.FindAsync(_ => true);
+                return dedicatorias.ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task UpdateGlosario(string? id, string? contenido) 
+        {
+            try
+            {
+                var filter = Builders<Glosario>.Filter.Eq(x => x.Id, id);
+
+                var update = Builders<Glosario>.Update.Set(x => x.Contenido, contenido);
+
+                if (_glosarioCollection != null)
+                {
+                    await _glosarioCollection.UpdateOneAsync(filter, update);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task UpdateDedicatoria(string? id, string? contenido) 
+        {
+            try
+            {
+                var filter = Builders<Dedicatoria>.Filter.Eq(x => x.Id, id);
+
+                var update = Builders<Dedicatoria>.Update.Set(x => x.Contenido, contenido);
+
+                if (_dedicatoriaCollection != null)
+                {
+                    await _dedicatoriaCollection.UpdateOneAsync(filter, update);
+                }
             }
             catch
             {

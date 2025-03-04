@@ -2,7 +2,7 @@
 {
     public class LibroAbreviatura
     {
-        public string Id { get; set; }
-        public string Abreviatura { get; set; }
+        public string? Id { get; set; }
+        public string? Abreviatura { get; set; }
     }
 }

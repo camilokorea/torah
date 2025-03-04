@@ -1,8 +1,8 @@
 ﻿namespace TorahBackend.Application.DTO
 {
-    public class LibroNombre
+    public class GlosarioDTO
     {
         public string? Id { get; set; }
-        public string? Nombre { get; set; }
+        public string? Contenido { get; set; }
     }
 }

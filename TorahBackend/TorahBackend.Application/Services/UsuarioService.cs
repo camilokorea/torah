@@ -18,7 +18,7 @@ namespace TorahBackend.Application.Services
             _jwtConfig = jwtConfig;
         }
 
-        public async Task<Usuario> GetUsuario(string email)
+        public async Task<Usuario> GetUsuario(string? email)
         {
             try { 
                 return await _dataRepository.GetUsuario(email);

@@ -23,11 +23,19 @@ var versionControladorService = new VersionControladorService(dataRepository);
 
 var libroService = new LibroService(dataRepository, versionControladorService);
 
+var glosarioService = new GlosarioService(dataRepository);
+
+var dedicatoriaService = new DedicatoriaService(dataRepository);
+
 builder.Services.AddSingleton<IDataRepository>(provider => dataRepository);
 
 builder.Services.AddSingleton<IUsuarioService>(provider => usuarioService);
 
 builder.Services.AddSingleton<ILibroService>(provider => libroService);
+
+builder.Services.AddSingleton<IGlosarioService>(provider => glosarioService);
+
+builder.Services.AddSingleton<IDedicatoriaService>(provider => dedicatoriaService);
 
 builder.Services.AddSingleton<IVersionControladorService>(provider => versionControladorService);
 

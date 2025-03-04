@@ -35,7 +35,8 @@ namespace TorahBackend.Application.Services
                             list.Add(new LibroInfo { 
                                 Id = libro.Id,
                                 Abreviacion = libro.Abreviacion,
-                                Nombre=libro.Nombre
+                                Nombre = libro.Nombre,
+                                Testamento = libro.Testamento
                             });
                         });
                     }
@@ -48,7 +49,7 @@ namespace TorahBackend.Application.Services
             }
         }
 
-        public async Task<LibroDetalle> Get(string id)
+        public async Task<LibroDetalle> Get(string? id)
         {
             try
             {
@@ -61,6 +62,7 @@ namespace TorahBackend.Application.Services
                     libro.Id = libroRecord.Id;
                     libro.Nombre = libroRecord.Nombre;
                     libro.Abreviacion = libroRecord.Abreviacion;
+                    libro.Testamento = libroRecord.Testamento;
 
                     foreach (var item in libroRecord.Capitulos)
                     {
@@ -100,6 +102,7 @@ namespace TorahBackend.Application.Services
                             Id = libroRecord.Id,
                             Nombre = libroRecord.Nombre,
                             Abreviacion = libroRecord.Abreviacion,
+                            Testamento = libroRecord.Testamento
                         });
 
                         foreach (var item in libroRecord.Capitulos)
@@ -121,7 +124,7 @@ namespace TorahBackend.Application.Services
             }
         }
 
-        public async Task ActualizarNombre(string id, string nombre)
+        public async Task ActualizarNombre(string? id, string? nombre)
         {
             try
             {
@@ -134,7 +137,7 @@ namespace TorahBackend.Application.Services
             }
         }
 
-        public async Task ActualizarAbreviatura(string id, string abreviatura)
+        public async Task ActualizarAbreviatura(string? id, string? abreviatura)
         {
             try
             {
@@ -147,7 +150,7 @@ namespace TorahBackend.Application.Services
             }
         }
 
-        public async Task ActualizarVersiculo(string id, int capituloNumero, int versiculoNumero, string versiculo)
+        public async Task ActualizarVersiculo(string? id, int capituloNumero, int versiculoNumero, string? versiculo)
         {
             try
             {

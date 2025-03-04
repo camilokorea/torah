@@ -34,6 +34,7 @@ const Torah = () => {
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Prefijo</th>
+                                    <th>Testamento</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,6 +44,7 @@ const Torah = () => {
                                             <Link to={`/libro/${libro.id}`}>{libro.nombre}</Link>
                                         </td>
                                         <td>{libro.abreviacion}</td>
+                                        <td>{libro.testamento}</td>
                                     </tr>
                                 ))}
                             </tbody>

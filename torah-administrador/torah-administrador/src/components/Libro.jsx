@@ -140,6 +140,11 @@ const Libro = () => {
                                 <Row>
                                     <Container>
                                         <Row className="d-flex justify-content-left align-items-left">
+                                            <Col xs={9} sm={10} md={10} lg={11}>
+                                                <h3>{libro?.testamento}</h3>
+                                            </Col>
+                                        </Row>
+                                        <Row className="d-flex justify-content-left align-items-left">
                                             <Col xs={3} sm={2} md={2} lg={1}>
                                                 <Button variant="primary" size="sm" onClick={handleShowModalLibroTitulo}>
                                                     <FaPencilAlt />
