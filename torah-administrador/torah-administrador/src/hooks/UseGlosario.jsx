@@ -49,7 +49,7 @@ export const UseGlosario = () => {
         setErrorActualizacionGlosario(null);
         setCrudDone(false);
         try {
-            const response = await fetch(API_URL + 'actualizar', {
+            const response = await fetch(API_URL + 'actualizar/contenido', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

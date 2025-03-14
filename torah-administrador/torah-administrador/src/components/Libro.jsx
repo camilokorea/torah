@@ -283,7 +283,8 @@ const Libro = () => {
                         <Form.Group className="mb-3" controlId="LibroVersiculoForm">
                             <Form.Label>Versículo</Form.Label>
                             <Form.Control
-                                type="text"
+                                as="textarea"
+                                rows={3}
                                 autoFocus
                                 value={libroVersiculoInputValue.versiculo || ""}
                                 onChange={handleChangeLibroVersiculoInputValue}

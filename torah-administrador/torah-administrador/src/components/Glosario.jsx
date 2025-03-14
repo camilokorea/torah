@@ -79,7 +79,8 @@ const Glosario = () => {
                                     <Form.Group className="mb-3" controlId="GlosarioForm">
                                         <Form.Label>Contenido</Form.Label>
                                         <Form.Control
-                                            type="text"
+                                            as="textarea"
+                                            rows={8}
                                             autoFocus
                                             value={glosarioContenidoInputValue || ""}
                                             onChange={handleChangeGlosarioContenidoInputValue}
@@ -87,7 +88,7 @@ const Glosario = () => {
                                     </Form.Group>
                                     <Row>
                                         <Col>
-                                            <Button variant="primary" onClick={handleUpdateGlosario} disabled={loadingActualizacionGlosario}>
+                                            <Button variant="primary" onClick={handleUpdateGlosario} disabled={loadingActualizacionGlosario || glosarioContenidoInputValue.length == 0}>
                                                 {!loadingActualizacionGlosario ? "Guardar Cambios" : "Cargando"}
                                                 {loadingActualizacionGlosario ? (
                                                     <Spinner
