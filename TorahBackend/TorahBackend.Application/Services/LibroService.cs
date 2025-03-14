@@ -124,6 +124,18 @@ namespace TorahBackend.Application.Services
             }
         }
 
+        public async Task<List<string>> GetTestamentos() 
+        {
+            try 
+            {
+                return await _dataRepository.ListTestamentos();
+            }
+            catch
+            {
+                throw; 
+            }
+        }
+
         public async Task ActualizarNombre(string? id, string? nombre)
         {
             try

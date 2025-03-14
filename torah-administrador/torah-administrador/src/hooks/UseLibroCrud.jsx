@@ -16,9 +16,12 @@ export const UseLibroCrud = () => {
   } = UseHttpCodes();
 
   const [libros, setLibros] = useState([]);
+  const [testamentos, setTestamentos] = useState([]);
   const [libro, setLibro] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingCrud, setLoadingCrud] = useState(false);
+  const [loadingTestamentos, setLoadingTestamentos] = useState(false);
+  const [errorTestamentos, setErrorTestamentos] = useState(null);
   const [errorLibro, setErrorLibro] = useState(null);
   const [errorCrud, setErrorCrud] = useState(null);
   const [crudDone, setCrudDone] = useState(false);
@@ -41,6 +44,26 @@ export const UseLibroCrud = () => {
       setErrorLibros(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Obtener todos los testamentos
+  const fetchTestamentos = async () => {
+    setLoadingTestamentos(true);
+    setErrorTestamentos(null);
+    try {
+      const response = await fetch(API_URL + 'list/testamento');
+
+      if (!response.ok) {
+        setErrorTestamentos('Se produjo un error al tratar de obtener la lista de testamentos de la Torah');
+      } else {
+        const data = await response.json();
+        setTestamentos(data);
+      }
+    } catch (err) {
+      setErrorTestamentos(err.message);
+    } finally {
+      setLoadingTestamentos(false);
     }
   };
 
@@ -175,15 +198,19 @@ export const UseLibroCrud = () => {
   };
 
   return {
+    testamentos,
     libros,
     libro,
     loading,
     loadingCrud,
+    loadingTestamentos,
     errorLibro,
     errorCrud,
     errorLibros,
+    errorTestamentos,
     crudDone,
     fetchLibros,
+    fetchTestamentos,
     fetchLibro,
     actualizarNombre,
     actualizarAbreviatura,

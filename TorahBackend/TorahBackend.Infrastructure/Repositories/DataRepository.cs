@@ -132,6 +132,26 @@ namespace TorahBackend.Infrastructure.Repositories
             }
         }
 
+        public async Task<List<string>> ListTestamentos() 
+        {
+            try
+            {
+                var testamentos = new List<string>();
+
+                if (_libroCollection != null) 
+                {
+                    var testamentoValues = await _libroCollection.DistinctAsync<string>("Testamento", FilterDefinition<Libro>.Empty);
+                    testamentos = testamentoValues.ToList();
+                }
+
+                return testamentos;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Libro>> ListLibros()
         {
             try

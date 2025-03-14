@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TorahBackend.Application.DTO;
 using TorahBackend.Application.Interfaces;
-using TorahBackend.Application.Services;
 
 namespace TorahBackend.WebApi.Controllers
 {
