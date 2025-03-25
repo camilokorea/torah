@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { UseHttpCodes } from '../hooks/UseHttpCodes';
 
 // URL base del API
-const API_URL = 'https://localhost:7116/api/Libro/';
+const API_URL = 'https://bibliaapi.comunidadmenorah.com/api/Libro/';
 
 // Custom Hook
 export const UseLibroCrud = () => {
