@@ -8,7 +8,7 @@ namespace TorahBackend.Application.Interfaces
 
         Task<LibroDetalle> Get(string? id);
 
-        Task<List<LibroDetalle>> GetTorah();
+        Task<Torah> GetTorah();
 
         Task<List<string>> GetTestamentos();
 

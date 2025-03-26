@@ -85,10 +85,12 @@ namespace TorahBackend.Application.Services
             }
         }
 
-        public async Task<List<LibroDetalle>> GetTorah()
+        public async Task<Torah> GetTorah()
         {
             try
             {
+                Torah torah = new Torah();
+
                 var libroRecords = await _dataRepository.ListLibros();
 
                 List<LibroDetalle> libros = new List<LibroDetalle>();
@@ -116,7 +118,24 @@ namespace TorahBackend.Application.Services
                     }
                 }
 
-                return libros;
+                torah.libros = libros;
+
+                var glosarios = await _dataRepository.ListGlosario();
+
+                var dedicatorias = await _dataRepository.ListDedicatoria();
+
+                torah.glosario = new GlosarioDTO
+                {
+                    Contenido = glosarios?.FirstOrDefault()?.Contenido
+                };
+
+                torah.dedicatoria = new DedicatoriaDTO {
+                    Contenido = dedicatorias?.FirstOrDefault()?.Contenido
+                };
+
+                torah.testamentos = await _dataRepository.ListTestamentos();
+
+                return torah;
             }
             catch
             {

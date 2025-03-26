@@ -34,10 +34,10 @@ namespace TorahBackend.WebApi.Controllers
         }
 
         [HttpGet("get/torah")]
-        public async Task<IActionResult> Totah()
+        public async Task<IActionResult> Torah()
         {
-            var libros = await _libroService.GetTorah();
-            return Ok(libros);
+            var torah = await _libroService.GetTorah();
+            return Ok(torah);
         }
 
         [HttpGet("list/testamento")]
