@@ -8,33 +8,33 @@ export const useApiLibro = () => {
         codigosHttp
     } = useHttpCodes();
 
-    const [libros, setLibros] = useState([]);
-    const [loadingLibros, setLoadingLibros] = useState(false);
+    const [apiTorah, setApiTorah] = useState(null);
+    const [loadingApiTorah, setLoadingApiTorah] = useState(false);
     const [errorLibros, setErrorLibros] = useState(null);
 
-    const fetchLibros = async () => {
-        setLoadingLibros(true);
+    const fetchTorah = async () => {
+        setLoadingApiTorah(true);
         setErrorLibros(null);
         try {
             const response = await fetch(API_URL + 'get/torah');
 
             if (!response.ok) {
-                setErrorLibros('Se produjo un error al tratar de obtener la lista de libros de la Torah: ' + response.status + ' ' + codigosHttp[response.status]);
+                setErrorLibros('Se produjo un error al tratar de obtener la Torah desde el servidor: ' + response.status + ' ' + codigosHttp[response.status]);
             } else {
                 const data = await response.json();
-                setLibros(data);
+                setApiTorah(data);
             }
         } catch (err) {
             setErrorLibros(err.message);
         } finally {
-            setLoadingLibros(false);
+            setLoadingApiTorah(false);
         }
     };
 
     return {
-        loadingLibros,
+        loadingApiTorah,
         errorLibros,
-        libros,
-        fetchLibros
+        apiTorah,
+        fetchTorah
     };
 };

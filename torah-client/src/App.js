@@ -5,9 +5,14 @@ import { useDb } from './hooks/useDb';
 import { useApiLibro } from './hooks/useAPILibro';
 import { useApiVersion } from './hooks/useAPIVersion';
 import { ToastContainer, toast } from 'react-toastify';
+import Accordion from 'react-bootstrap/Accordion';
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
+  const [libros, setLibros] = useState(null);
+  const [testamentos, setTestamentos] = useState([]);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   const {
@@ -22,7 +27,7 @@ function App() {
     errorDb,
     queryTorah,
     queryVersion,
-    insertLibro,
+    insertTorah,
     insertUltimaVersion
   } = useDb();
 
@@ -34,10 +39,10 @@ function App() {
   } = useApiVersion();
 
   const {
-    loadingLibros,
+    loadingApiTorah,
     errorLibros,
-    libros,
-    fetchLibros
+    apiTorah,
+    fetchTorah
   } = useApiLibro();
 
   const updateOnlineStatus = async () => {
@@ -60,13 +65,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (torah) {
-      if (torah.length > 0) {
-        setData(torah);
-      } else {
-        if (isOnline === true) {
-          fetchLibros();
-        }
+    if (torah.length > 0) {
+      setData(torah);
+    } else {
+      if (isOnline === true) {
+        fetchTorah();
       }
     }
   }, [torah]);
@@ -78,10 +81,10 @@ function App() {
   }, [loadingDbVersion]);
 
   useEffect(() => {
-    if (loadingLibros) {
+    if (loadingApiTorah) {
       toast.info("Cargando datos de version en el servidor", { position: "bottom-right" });
     }
-  }, [loadingLibros]);
+  }, [loadingApiTorah]);
 
   useEffect(() => {
     if (loadingDbLibros) {
@@ -145,12 +148,14 @@ function App() {
         await insertUltimaVersion(lastVersion);
         setVersion(lastVersion);
       }
+
       if (version) {
         if (version.version < lastVersion.version) {
           await insertUltimaVersion(lastVersion);
           setVersion(lastVersion);
           if (isOnline === true) {
-            await fetchLibros();
+            console.log('fetchTorah');
+            await fetchTorah();
           }
         }
       }
@@ -158,12 +163,20 @@ function App() {
   }, [lastVersion]);
 
   useMemo(async () => {
-    libros.forEach(item => {
-      insertLibro(item);
-    });
-
+    insertTorah(apiTorah);
     await queryTorah();
-  }, [libros]);
+  }, [apiTorah]);
+
+  useEffect(() => {
+    console.log(data);
+
+    if (data) {
+      if (data[0]) {
+        setTestamentos(data[0].testamentos);
+        setLibros(data[0].libros);
+      }
+    }
+  }, [data]);
 
   return (
     <div className="app">
@@ -174,18 +187,23 @@ function App() {
         <p>Version: {version?.version}</p>
       </header>
       <main>
-        {
-          data.length > 0 ?
-            (
-              <ul>
-                {data.map(item => (<li key={item.id}>{item.nombre}</li>))}
-              </ul>
-            )
-            :
-            (
-              <p>No data</p>
-            )
-        }
+        <Accordion defaultActiveKey="0">
+          {testamentos?.map((testamento, indexTestamento) => (
+            <Accordion.Item eventKey={indexTestamento.toString()} key={indexTestamento}>
+              <Accordion.Header key={indexTestamento}>{testamento}</Accordion.Header>
+              <Accordion.Body>
+                {libros?.map((libro) => (
+                  libro?.testamento == testamento ? (
+                    <article key={libro?.id}>
+                      <Link to={'/libro/' + libro?.id}>{libro?.nombre}</Link>
+                    </article>
+                  ) : null
+                ))}
+
+              </Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
       </main>
     </div>
   );

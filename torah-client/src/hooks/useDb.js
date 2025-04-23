@@ -17,7 +17,7 @@ const db = {
 };
 
 export const useDb = () => {
-    const [torah, setTorah] = useState(null);
+    const [torah, setTorah] = useState([]);
     const [version, setVersion] = useState(false);
     const [loadingDb, setLoadingDb] = useState(false);
     const [loadingDbLibros, setLoadingDbLibros] = useState(false);
@@ -36,7 +36,7 @@ export const useDb = () => {
             return openDB(db.DB_NAME, 1, {
                 upgrade(dbObject) {
                     if (!dbObject.objectStoreNames.contains(db.stores.torah.name)) {
-                        dbObject.createObjectStore(db.stores.torah.name, { keyPath: 'id' });
+                        dbObject.createObjectStore(db.stores.torah.name);
                     }
 
                     if (!dbObject.objectStoreNames.contains(db.stores.version.name)) {
@@ -70,7 +70,7 @@ export const useDb = () => {
             setTorah(response);
             setLoadingDbLibros(false);
         }
-        catch (e) {
+        catch (e) {            
             setErrorDb(e.message);
             setLoadingDbLibros(false);
         }
@@ -94,7 +94,7 @@ export const useDb = () => {
         }
     };
 
-    const insertLibro = async (libro) => {
+    const insertTorah = async (torah) => {
         setErrorDb(null);
         setLoadingDbInsertarLibro(true);
 
@@ -102,11 +102,12 @@ export const useDb = () => {
             await initDB();
             const tx = db.dbInstance.transaction(db.stores.torah.name, 'readwrite');
             const store = tx.objectStore(db.stores.torah.name);
-            store.put(libro);
+            store.put(torah, '5936a812bd0c404d8dfcd4f0fb488516');
             await tx.done;
             setLoadingDbInsertarLibro(false);
         }
         catch (e) {
+            console.log(e.message);
             setErrorDb(e.message);
             setLoadingDbInsertarLibro(false);
         }
@@ -143,7 +144,7 @@ export const useDb = () => {
         errorDb,
         queryTorah,
         queryVersion,
-        insertLibro,
+        insertTorah,
         insertUltimaVersion
     };
 };
