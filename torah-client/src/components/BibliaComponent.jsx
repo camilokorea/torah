@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ButtonGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import LibrosGridComponent from './LibrosGridComponent';
 
-function BibliaComponent({librosAntiguoTestamento, librosNuevoTestamento, testamentos}) {
+function BibliaComponent({ librosAntiguoTestamento, librosNuevoTestamento, testamentos }) {
     const [selectedTestamento, setSelectedTestamento] = useState(null);
 
     const switchTestamento = (testamento) => {
         setSelectedTestamento(testamento);
     };
+
+    useMemo(() => {
+        if (!selectedTestamento) {
+            setSelectedTestamento(testamentos[0]);
+        }
+    }, [selectedTestamento]);
+
 
     return (
         <>

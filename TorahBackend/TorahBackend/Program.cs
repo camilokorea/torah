@@ -23,9 +23,9 @@ var versionControladorService = new VersionControladorService(dataRepository);
 
 var libroService = new LibroService(dataRepository, versionControladorService);
 
-var glosarioService = new GlosarioService(dataRepository);
+var glosarioService = new GlosarioService(dataRepository, versionControladorService);
 
-var dedicatoriaService = new DedicatoriaService(dataRepository);
+var dedicatoriaService = new DedicatoriaService(dataRepository, versionControladorService);
 
 builder.Services.AddSingleton<IDataRepository>(provider => dataRepository);
 

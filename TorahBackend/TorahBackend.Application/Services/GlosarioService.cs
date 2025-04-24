@@ -7,9 +7,12 @@ namespace TorahBackend.Application.Services
     public class GlosarioService: IGlosarioService
     {
         private readonly IDataRepository _dataRepository;
-        public GlosarioService(IDataRepository dataRepository) 
+
+        private readonly IVersionControladorService _versionControladorService;
+        public GlosarioService(IDataRepository dataRepository, IVersionControladorService versionControladorService) 
         {
             _dataRepository = dataRepository;
+            _versionControladorService = versionControladorService;
         }
 
         public async Task<List<GlosarioDTO>> List() 
@@ -43,6 +46,7 @@ namespace TorahBackend.Application.Services
             try
             {
                 await _dataRepository.UpdateGlosario(id, contenido);
+                await _versionControladorService.IncrementarVersion();
             }
             catch
             {

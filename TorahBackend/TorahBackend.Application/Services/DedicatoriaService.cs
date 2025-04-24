@@ -7,9 +7,12 @@ namespace TorahBackend.Application.Services
     public class DedicatoriaService : IDedicatoriaService
     {
         private readonly IDataRepository _dataRepository;
-        public DedicatoriaService(IDataRepository dataRepository)
+
+        private readonly IVersionControladorService _versionControladorService;
+        public DedicatoriaService(IDataRepository dataRepository, IVersionControladorService versionControladorService)
         {
             _dataRepository = dataRepository;
+            _versionControladorService = versionControladorService;
         }
 
         public async Task<List<DedicatoriaDTO>> List()
@@ -43,6 +46,7 @@ namespace TorahBackend.Application.Services
             try
             {
                 await _dataRepository.UpdateDedicatoria(id, contenido);
+                await _versionControladorService.IncrementarVersion();
             }
             catch
             {

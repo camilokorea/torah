@@ -6,47 +6,49 @@ import { useDb } from '../hooks/useDb';
 import { useParams } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion';
 
-const LibroComponent = ({ id }) => {
-    const [loading, setLoading] = useState(false);
+const LibroComponent = () => {
+    const { id } = useParams();
     const [libro, setLibro] = useState(null);
 
+    const {
+        torah,
+        queryTorah,
+        loadingDbLibros,
+    } = useDb();
+
     useEffect(() => {
-        console.log(id);
+        queryTorah();
     }, []);
 
-    // useMemo(() => {
-    //     if (errorLibro) {
-    //         toast.error(errorLibro, { position: "bottom-right" });
-    //     }
-    // }, [errorLibro]);
+    useMemo(() => {
+        if (torah) {
+            if (torah.length > 0) {
+                if (torah[0]) {
+                    setLibro(torah[0].libros.filter(item => {
+                        return item.id == id;
+                    })[0]);
+                }
+            }
+        }
+    }, [torah]);
 
     return (
         <div>
             <Container>
                 <Row className="d-flex justify-content-center align-items-center">
                     <ToastContainer />
-                    {loading ? (<Spinner animation="border" variant="primary" />) :
+                    {loadingDbLibros ? (<Spinner animation="border" variant="primary" />) :
                         (
                             <Container>
                                 <Row>
                                     <Container>
                                         <Row className="d-flex justify-content-left align-items-left">
                                             <Col xs={9} sm={10} md={10} lg={11}>
-                                                <h3>{libro?.testamento}</h3>
-                                            </Col>
-                                        </Row>
-                                        <Row className="d-flex justify-content-left align-items-left">
-                                            <Col xs={9} sm={10} md={10} lg={11}>
-                                                <h4>{libro?.nombre}</h4>
-                                            </Col>
-                                        </Row>
-                                        <Row className="d-flex justify-content-left align-items-left">
-                                            <Col xs={9} sm={10} md={10} lg={11}>
-                                                <p>Abreviatura: {libro?.abreviacion}</p>
+                                                <h3>{libro?.nombre}</h3>
+                                                <p>{libro?.testamento}</p>
                                             </Col>
                                         </Row>
                                     </Container>
-                                    <h3>Capítulos</h3>
                                     <Accordion defaultActiveKey="0">
                                         {libro?.capitulos.map((capitulo, indexCapitulo) => (
                                             <Accordion.Item eventKey={indexCapitulo.toString()} key={capitulo.capituloNumero}>
