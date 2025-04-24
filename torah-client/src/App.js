@@ -1,20 +1,30 @@
-import React, { useEffect, useState, useMemo } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDb } from './hooks/useDb';
 import { useApiLibro } from './hooks/useAPILibro';
 import { useApiVersion } from './hooks/useAPIVersion';
 import { ToastContainer, toast } from 'react-toastify';
-import Accordion from 'react-bootstrap/Accordion';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Routes, Route, useNavigate} from 'react-router-dom';
+
+import BottomMenuComponent from './components/BottomMenuComponent';
+import LibroComponent from './components/LibroComponent';
+import BibliaComponent from './components/BibliaComponent';
+import DedicatoriaComponent from './components/DedicatoriaComponent';
+import GlosarioComponent from './components/GlosarioComponent';
 
 function App() {
   const [data, setData] = useState(null);
-  const [libros, setLibros] = useState(null);
+  const [librosAntiguoTestamento, setLibrosAntiguoTestamento] = useState([]);
+  const [librosNuevoTestamento, setLibrosNuevoTestamento] = useState([]);
   const [testamentos, setTestamentos] = useState([]);
+  const [dedicatoria, setDedicatoria] = useState(null);
+  const [glosario, setGlosario] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
+  const navigate = useNavigate();
+  
   const {
     torah,
     version,
@@ -168,43 +178,37 @@ function App() {
   }, [apiTorah]);
 
   useEffect(() => {
-    console.log(data);
-
     if (data) {
       if (data[0]) {
         setTestamentos(data[0].testamentos);
-        setLibros(data[0].libros);
+        setDedicatoria(data[0].dedicatoria);
+        setGlosario(data[0].glosario);
+
+        setLibrosAntiguoTestamento(data[0].libros.filter(item => {
+          return item.testamento == data[0].testamentos[0];
+        }));
+
+        setLibrosNuevoTestamento(data[0].libros.filter(item => {
+          return item.testamento == data[0].testamentos[1];
+        }));
       }
     }
   }, [data]);
 
+  const onSelect = (option) => {
+    navigate(option);
+  };
+
   return (
     <div className="app">
       <ToastContainer />
-      <header className="app-header">
-        <h1>Torah Client</h1>
-        <p>Status: {isOnline ? 'Online' : 'Offline'}</p>
-        <p>Version: {version?.version}</p>
-      </header>
-      <main>
-        <Accordion defaultActiveKey="0">
-          {testamentos?.map((testamento, indexTestamento) => (
-            <Accordion.Item eventKey={indexTestamento.toString()} key={indexTestamento}>
-              <Accordion.Header key={indexTestamento}>{testamento}</Accordion.Header>
-              <Accordion.Body>
-                {libros?.map((libro) => (
-                  libro?.testamento == testamento ? (
-                    <article key={libro?.id}>
-                      <Link to={'/libro/' + libro?.id}>{libro?.nombre}</Link>
-                    </article>
-                  ) : null
-                ))}
-
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
-        </Accordion>
-      </main>
+      <Routes>
+        <Route path="/" element={<BibliaComponent librosAntiguoTestamento={librosAntiguoTestamento} librosNuevoTestamento={librosNuevoTestamento} testamentos={testamentos} />} />
+        <Route path="/libro/:id" element={<LibroComponent />} />
+        <Route path="/dedicatoria" element={<DedicatoriaComponent dedicatoria={dedicatoria}/>} />
+        <Route path="/glosario" element={<GlosarioComponent glosario={glosario} />} />
+      </Routes>
+      <BottomMenuComponent onSelect={onSelect} isOnline={isOnline} version={version?.version} />
     </div>
   );
 }
