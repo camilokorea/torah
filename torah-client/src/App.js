@@ -164,7 +164,6 @@ function App() {
           await insertUltimaVersion(lastVersion);
           setVersion(lastVersion);
           if (isOnline === true) {
-            console.log('fetchTorah');
             await fetchTorah();
           }
         }
