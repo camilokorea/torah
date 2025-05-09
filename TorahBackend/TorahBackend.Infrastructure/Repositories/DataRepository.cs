@@ -27,6 +27,15 @@ namespace TorahBackend.Infrastructure.Repositories
 
                 var mongoUrl = MongoUrl.Create(_connectionString);
 
+                var settings = MongoClientSettings.FromUrl(mongoUrl);
+
+                // Forzar el mecanismo de autenticación
+                settings.Credential = MongoCredential.CreateCredential(
+                    mongoUrl.AuthenticationSource ?? "admin",
+                    mongoUrl.Username,
+                    mongoUrl.Password
+                );
+
                 var mongoClient = new MongoClient(mongoUrl);
 
                 _database = mongoClient.GetDatabase(mongoUrl.DatabaseName);
