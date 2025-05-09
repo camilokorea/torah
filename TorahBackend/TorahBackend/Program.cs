@@ -86,9 +86,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("*")
+        policy.WithOrigins("https://bibliaadministrador.comunidadmenorah.com")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials(); // Solo si usas cookies o tokens en cabecera
     });
 });
 
