@@ -11,9 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
-Console.WriteLine("Db Conn:");
-Console.WriteLine(connectionString);
-
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
 
 var torahJsonRepository = new TorahJsonRepository();
@@ -89,9 +86,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("*")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+                "https://biblia.comunidadmenorah.com",
+                "https://bibliaadministrador.comunidadmenorah.com"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // Si usas cookies o Authorization headers
     });
 });
 
