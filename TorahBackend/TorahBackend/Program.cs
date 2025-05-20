@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
+Console.WriteLine("Db Conn:");
 Console.WriteLine(connectionString);
 
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
