@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useHttpCodes } from './useHttpCodes';
 
-const API_URL = 'https://localhost:7116/api/Libro/';
+const API_URL = 'https://bibliaapi.comunidadmenorah.com/api/Libro/';
+// const API_URL = 'https://localhost:7116/api/Libro/';
 
 export const useApiLibro = () => {
     const {

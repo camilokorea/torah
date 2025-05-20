@@ -5,8 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function DedicatoriaComponent({ dedicatoria }) {
     return (
         <>
-            <h1>Dedicatoria</h1>
-            <p>{dedicatoria?.contenido}</p>
+            <div>
+                <div className="d-flex flex-column justify-content-center position-fixed top-0 w-100 header header-libro">
+                    <h1>Dedicatoria</h1>
+                </div>
+                <div className='biblia-libro-container'>
+                    <p>{dedicatoria?.contenido}</p>
+                </div>
+            </div>
         </>
     );
 }

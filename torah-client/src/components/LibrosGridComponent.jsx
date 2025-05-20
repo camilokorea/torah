@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 const LibrosGridComponente = ({ items }) => {
     const chunkArray = (arr, size) => {
@@ -23,8 +24,8 @@ const LibrosGridComponente = ({ items }) => {
                 <Row key={i} className="mb-3">
                     {row.map((item, j) => (
                         <Col key={j} sm={4}>
-                            <div className="p-3 border rounded text-center">
-                                <Button variant="secondary" className="w-100" onClick={() => { onClick(item) }}>{item.nombre}</Button>
+                            <div className="p-3 rounded text-center">
+                                <Button className="libro-boton" onClick={() => { onClick(item) }}>{item.nombre}</Button>
                             </div>
                         </Col>
                     ))}

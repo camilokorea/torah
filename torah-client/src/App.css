@@ -1,42 +1,40 @@
-.App {
-  text-align: center;
+.header {
+  z-index: 1;
+  padding: 20px;
+  background-color: rgb(25, 63, 115, 1) !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header-libro {
+  color: #FFFFFF !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+.header .testamento-boton {
+  background-color: #FFFFFF !important;
+  color: #193F73 !important;
+  border: none !important;
+  font-weight: bold;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.biblia-container {
+  padding-top: 10vh;
+  margin-bottom: 150px;
 }
 
-.App-link {
-  color: #61dafb;
+.biblia-libro-container {
+  padding-top: 17vh;
+  margin-bottom: 150px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-.Biblia-container {
-  height: 160vh;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.libro-boton {
+  background-color: #E0D3AF !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 135px !important;
+  height: 135px !important;
+  font-weight: bold !important;
+  font-size: 0.9em !important;
+  color: #193F73 !important;
 }

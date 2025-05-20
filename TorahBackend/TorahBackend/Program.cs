@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
+Console.WriteLine(connectionString);
+
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
 
 var torahJsonRepository = new TorahJsonRepository();
@@ -86,12 +88,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("https://bibliaadministrador.comunidadmenorah.com")
+        policy.WithOrigins("*")
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials(); // Solo si usas cookies o tokens en cabecera
+              .AllowAnyMethod();
     });
 });
+
+builder.WebHost.UseUrls("http://10.0.1.2:5000");
 
 // Agregar autenticación JWT
 builder.Services.AddAuthentication("Bearer")

@@ -179,7 +179,7 @@ function App() {
   useEffect(() => {
     if (data) {
       if (data[0]) {
-        setTestamentos(data[0].testamentos);
+        setTestamentos(data[0].testamentos.sort((a, b) => b.localeCompare(a)));
         setDedicatoria(data[0].dedicatoria);
         setGlosario(data[0].glosario);
 
