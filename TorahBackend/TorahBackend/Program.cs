@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 
+Console.WriteLine("DBString:");
+Console.WriteLine(connectionString);
+
 var jwtConfig = builder.Configuration.GetSection("Jwt").Get<JwtConfig>();
 
 var torahJsonRepository = new TorahJsonRepository();
