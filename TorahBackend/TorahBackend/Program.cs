@@ -9,9 +9,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var appsettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+
 builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile(appsettingsPath, optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
